@@ -1,28 +1,19 @@
 <script>
 import { Link, useForm } from '@inertiajs/vue3';
-import { mdiBallotOutline, mdiAccount, mdiMail, mdiGithub } from "@mdi/js";
-import LayoutMain from '@/layouts/LayoutMain.vue';
-import FormField from "@/components/FormField.vue";
-import FormControl from "@/components/FormControl.vue";
-import BaseDivider from "@/components/BaseDivider.vue";
-import BaseButton from "@/components/BaseButton.vue";
-import BaseButtons from "@/components/BaseButtons.vue";
-import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.vue";
-import CardBox from "@/components/CardBox.vue";
-import FormControlV2 from "@/components/FormControlV2.vue";
-import FormControlV3 from "@/components/FormControlV3.vue";
-import FormControlV6 from "@/components/FormControlV6.vue";
-
+import { mdiBallotOutline, mdiAccount, mdiMail, mdiPhone, mdiCalendar, mdiIdCard } from "@mdi/js";
+import LayoutMain from "@/Layouts/LayoutMain.vue";
+import FormField from "@/Components/FormField.vue";
+import FormControl from "@/Components/FormControl.vue";
+import BaseDivider from "@/Components/BaseDivider.vue";
+import BaseButton from "@/Components/BaseButton.vue";
+import BaseButtons from "@/Components/BaseButtons.vue";
+import SectionTitleLineWithButton from "@/Components/SectionTitleLineWithButton.vue";
+import CardBox from "@/Components/CardBox.vue";
 
 export default {
     props: {
         titulo: { type: String, required: true },
-        version: { type: String, required: true },
         routeName: { type: String, required: true },
-        preguntas:{type: Object, required: true},
-        periodo:{type: Object, required: true},
-        grupo:{type: Object, required: true}, 
-        usuarios:{type: Object, required: true},
     },
     components: {
         LayoutMain,
@@ -31,93 +22,74 @@ export default {
         BaseDivider,
         BaseButton,
         BaseButtons,
-        FormControlV2,
-        FormControlV3,
-        FormControlV6,
         CardBox,
         SectionTitleLineWithButton
     },
-    setup(props) {
+    setup() {
         const handleSubmit = () => {
-            form.post(route('academico.store'));
+            form.post(route('entryformat.store'));
         };
 
         const form = useForm({
-            matricula: '',
-            profesor_id:'',
-            periodo_id:'',
-            grupo_id:'',
-            materia_recursar:'',
-            formato: '1',
-            version: props.version,
-            respuestas:[], // Inicializa con un arreglo del tamaño de props.preguntas lleno de undefined
-            pregunta_id: [],
-            
+            name: '',
+            paternalSurname: '',
+            maternalSurname: '',
+            email: '',
+            phone: '',
+            age: '',
+            birthdate: '',
+            ssn: ''
         });
-        const guardarRespuesta = (preguntaId) => {
-        form.respuestas[preguntaId] = form.respuestas[preguntaId] || ""; // Inicializa con un string vacío si es undefined
-        form.pregunta_id[preguntaId] = preguntaId;
-        }
 
-        return { handleSubmit, form, guardarRespuesta, mdiBallotOutline, mdiAccount, mdiMail, mdiGithub }
+        return { handleSubmit, form, mdiBallotOutline, mdiAccount, mdiMail, mdiPhone, mdiCalendar, mdiIdCard };
     }
 }
 </script>
 
 <template>
-    <LayoutMain :title="titulo">
-     
+    
         <SectionTitleLineWithButton :icon="mdiBallotOutline" :title="titulo" main>
-            
+            <a :href="`${route(routeName + 'index')}`">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                </svg>
+            </a>
         </SectionTitleLineWithButton>
-    
-        <div>
 
-                <CardBox form @submit.prevent="handleSubmit">
-
-                    <FormField label="Información personal">
-                        <FormControl v-model="form.matricula" placeholder="Matrícula"/>     
-
-                    </FormField>
-
-                    <FormField >
-                        <FormControlV6  v-model="form.grupo_id" :showOption="name" :options="grupo"/>
-                    </FormField>
-                    
-                    <FormField >
-                        <FormControlV2  v-model="form.profesor_id" :showOption="name" :options="usuarios"/>
-                    </FormField>
-                    <FormField >
-                        <FormControlV3  v-model="form.periodo_id" :showOption="name" :options="periodo"/>
-                    </FormField>
-                    <FormField>
-                        <FormControl v-model="form.materia_recursar" placeholder="Materia a recursar" />
-                    </FormField>
-                    
-                   
-                    
-                    <FormField label="Análisis académico individual">
-                        <div v-for="pregunta in preguntas.filter(item => item.formato === 1)" :key="pregunta.id">
-                            <p>{{ pregunta.pregunta }}</p>
-                            <FormControl  v-model="form.respuestas[pregunta.id]" @change="guardarRespuesta(pregunta.id)"/>
-                            <br>
-                        </div>
-                    </FormField>
-                    
-                    <template #footer>
-                        <BaseButtons>
-                            <BaseButton @click="handleSubmit" type="submit" color="warning" label="Crear" />
-                            <BaseButton :href="route(`${routeName}index`)" type="reset" color="danger" outline
-                                label="Cancelar" />
-                        </BaseButtons>
-                    </template>
-                </CardBox>
+        <CardBox form class="p-6 space-y-4 bg-white shadow-md rounded-lg" @submit.prevent="handleSubmit">
+            <FormField label="First Name">
+                <FormControl v-model="form.name" placeholder="Enter first name" />
+            </FormField>
+            <FormField label="Paternal Surname">
+                <FormControl v-model="form.paternalSurname" placeholder="Enter paternal surname" />
+            </FormField>
+            <FormField label="Maternal Surname">
+                <FormControl v-model="form.maternalSurname" placeholder="Enter maternal surname" />
+            </FormField>
+            <FormField label="Email">
+                <FormControl v-model="form.email" type="email" placeholder="Enter email" />
+            </FormField>
+            <FormField label="Phone Number">
+                <FormControl v-model="form.phone"  placeholder="Enter phone number" />
+            </FormField>
+            <FormField label="Age">
+                <FormControl v-model="form.age"  placeholder="Enter age" />
+            </FormField>
+            <FormField label="Birthdate">
+                <FormControl v-model="form.birthdate" type="date" />
+            </FormField>
+            <FormField label="Social Security Number (SSN)">
+                <FormControl v-model="form.ssn" placeholder="Enter SSN" />
+            </FormField>
             
-
-        </div>
-       
-    </LayoutMain>
-    
-    
+            <template #footer>
+                <BaseButtons class="flex justify-end">
+                    <BaseButton @click="handleSubmit" type="submit" color="info" label="Create" />
+                    <BaseButton :href="route(`${routeName}index`)" type="reset" color="danger" outline
+                        label="Cancel" />
+                </BaseButtons>
+            </template>
+        </CardBox>
     
 </template>

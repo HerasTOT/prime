@@ -54,6 +54,7 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 })->name('welcome');
+
 // Route::get('/', [WelcomeController::class, 'welcome'])
 //     ->name('welcome');
 
@@ -73,12 +74,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('user', UserController::class)->parameters(['user' => 'user']);
 
     Route::resource('entryformat', EntryFormatController::class)->names('entryformat');
-
     
-    // Route::resource('tratamientos', TratamientosController::class);
-    // Route::resource('doctores', DoctorController::class);
-    // Route::resource('pacientes', PacienteController::class);
-
 });
+Route::get('/entryformat/create', [EntryFormatController::class, 'create'])->name('entryformat.create');
+Route::post('/entryformat', [EntryFormatController::class, 'store'])->name('entryformat.store');
+
 
 require __DIR__ . '/auth.php';
