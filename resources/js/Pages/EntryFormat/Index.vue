@@ -1,137 +1,256 @@
-<script>
-import { Link, useForm } from '@inertiajs/vue3';
-import Swal from "sweetalert2";
-import Pagination from '@/Shared/Pagination.vue';
-// import LayoutMain from '@/layouts/LayoutMain.vue';
-import {
-    mdiMonitorCellphone,
-    mdiTableBorder,
-    mdiTableOff,
-    mdiGithub,
-    mdiApplicationEdit, mdiTrashCan
-} from "@mdi/js";
-
-import TableSampleClients from "@/Components/TableSampleClients.vue";
+<script setup>
+import { ref, reactive, watch,provide } from "vue";
+import { debounce } from "lodash";
+import { router } from "@inertiajs/vue3"; // Aquí importamos `router` de @inertiajs/vue3
 import CardBox from "@/Components/CardBox.vue";
-import SectionTitleLineWithButton from "@/Components/SectionTitleLineWithButton.vue";
-import BaseLevel from "@/Components/BaseLevel.vue";
+import LayoutMain from "@/Layouts/LayoutMain.vue";
 import BaseButtons from "@/Components/BaseButtons.vue";
 import BaseButton from "@/Components/BaseButton.vue";
-import CardBoxComponentEmpty from "@/Components/CardBoxComponentEmpty.vue";
-import NotificationBar from "@/Components/NotificationBar.vue";
+import SectionTitleLineWithButton from "@/Components/SectionTitleLineWithButton.vue";
+import {
+    mdiBallotOutline,
+    mdiInformation,
+    mdiPencil,
+    mdiBroom,
+    mdiMagnify,
+    mdiPlus
+} from "@mdi/js";
 
-
-
-export default {
-    props: {
-        titulo: { type: String, required: true },
-        FormatEntry: {
-            type: Object,
-            required: true
-        },
-        routeName: { type: String, required: true },
-        loadingResults: { type: Boolean, required: true, default: true }
+const props = defineProps({
+    title: {
+        type: String,
+        required: true,
     },
-    components: {
-        Link,
-        LayoutMain,
-        CardBox,
-        TableSampleClients,
-        SectionTitleLineWithButton,
-        BaseLevel,
-        BaseButtons,
-        BaseButton,
-        CardBoxComponentEmpty,
-        Pagination,
-        NotificationBar
+    format: {
+        type: Object,
+        required: true,
     },
-    setup() {
-        const form = useForm({
-            name: '',
-            paternalSurname: '',
-            maternalSurname: '',
-            phone:'',
-            age:'',
-            birthdate:'',
-            ssn:'',
-           
-        });
-        
-        return {
-            form, eliminar, mdiMonitorCellphone,
-            mdiTableBorder,
-            mdiTableOff,
-            mdiGithub,
-            mdiApplicationEdit, mdiTrashCan,
-        }
-    }
+    routeName: {
+        type: String,
+        required: true,
+    },
+    search: {
+        type: String,
+        required: false,
+        default: "",
+    },
+    direction: {
+        type: String,
+        required: false,
+        default: "desc",
+    },
+    order: {
+        type: String,
+        required: false,
+        default: "created_at",
+    },
+});
 
-}
+const search = ref(props.search);
+const isLoading = ref(false);
+
+const state = reactive({
+    filters: {
+        search: search,
+        order: props.order,
+        direction: props.direction,
+    },
+});
+
+watch(
+    search,
+    debounce(function (value) {
+        isLoading.value = true;
+        router.get(route(`${props.routeName}index`, state.filters, { replace: true }));
+    }, 500)
+);
+
+const cleanFilters = () => {
+    isLoading.value = true;
+    router.get(route(`${props.routeName}index`));
+};
+
+const filterBy = (order, direction) => {
+    state.filters.order = order;
+    state.filters.direction = direction;
+    isLoading.value = true;
+    router.get(route(`${props.routeName}index`, state.filters));
+};
+
+const filtrar = () => {
+    isLoading.value = true;
+    router.get(route(`${props.routeName}index`, state.filters));
+};
+
+const opts = [
+    {
+        label: "Nombre",
+        key: "name",
+        menu: [
+            { title: "Ordenar desde A - Z", direction: "asc" },
+            { title: "Ordenar desde Z - A", direction: "desc" },
+        ],
+    },
+    {
+        label: "Email",
+        key: "email",
+        menu: [
+            { title: "Ordenar desde A - Z", direction: "asc" },
+            { title: "Ordenar desde Z - A", direction: "desc" },
+        ],
+    },
+];
+
+provide("filterBy", filterBy);
 </script>
 
 <template>
+    <Head :title="title" />
     <LayoutMain>
-        <!-- <SectionTitleLineWithButton  :title="titulo" main>
-            <BaseButton :href="'periodo/create'" color="warning" label="Agregar período" />
-        </SectionTitleLineWithButton> -->
        
-        <NotificationBar v-if="$page.props.flash.success" color="success" :icon="mdiInformation" :outline="false">
-            {{ $page.props.flash.success }}
-        </NotificationBar>
+        
+        <SectionTitleLineWithButton
+            :icon="mdiBallotOutline"
+            :title="title"
+            main
+        />
 
-        <NotificationBar v-if="$page.props.flash.error" color="danger" :icon="mdiInformation" :outline="false">
-            {{ $page.props.flash.error }}
-        </NotificationBar>
+        <form @submit.prevent="filtrar" class="w-full mb-5">
+    <div class="flex flex-col md:flex-row justify-between">
+        <div class="flex w-1/2">
+            <!-- Filtro de búsqueda -->
+            <div class="relative w-full mr-1 mb-4">
+                <input
+                    type="search"
+                    id="search-dropdown"
+                    class="block p-2.5 md:h-11 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-l-lg md:rounded-l-none rounded-r-lg md:border-l-gray-300 border-l-gray-300 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+                    placeholder="Ingresa un parametro de búsqueda"
+                    v-model="search"
+                />
+                <BaseButton
+                    class="absolute top-0 right-0 h-full rounded-l-none rounded-r-lg"
+                    @click="cleanFilters"
+                    :icon="mdiBroom"
+                    color="info"
+                    title="Limpiar filtro"
+                />
+            </div>
 
-        <!-- <CardBox v-if="Periodo.data.length < 1">
-            <CardBoxComponentEmpty />
-        </CardBox>
+            
+          
+        </div>
 
-        <CardBox v-else class="mb-6" has-table>
+        <BaseButtons>
+            <BaseButton
+                :routeName="`${routeName}create`"
+                color="info"
+                :icon="mdiPlus"
+                label="Contestar formato"
+                class="w-full"
+            />
+        </BaseButtons>
+    </div>
+</form>
+
+
+        <CardBox v-if="format.data.length > 0">
             <table>
                 <thead>
                     <tr>
                         <th />
-                        <th>Periodo</th>
-                        <th>Año</th>
-                        <th>Nomenclatura</th>
-                        
-                        <th></th>
-                        <th />
+                        <th>
+                            <Dropdown title="Nombre" :options="opts" />
+                        </th>
+                        <th>
+                            <Dropdown title="Email" :options="opts" />
+                        </th>
+                        <th>Edad</th>
+                        <th>Fecha de nacimiento</th>
+                        <th>SSN</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in Periodo.data" :key="item.id">
-                        <td class="align-items-center">
-                            
-                        </td>
-                        <td data-label="Periodo">
-                            {{ item.periodo }}
-                        </td>
-                        <td data-label="Año">
-                            {{ item.año }}
-                        </td>
-                        <td data-label="nomenclatura">
-                            {{ item.nomenclatura }}
-                        </td>
-                        
-                        <td class="before:hidden lg:w-1 whitespace-nowrap">
-                            <BaseButtons type="justify-start lg:justify-end" no-wrap>
-                                <BaseButton color="warning" :icon="mdiApplicationEdit" small
-                                    :href="route(`${routeName}edit`, item.id)" />
-                                <BaseButton color="danger" :icon="mdiTrashCan" small @click="eliminar(item.id)" />
-                            </BaseButtons>
-                        </td>
-
+                    <tr v-for="item in format.data" :key="item.id">
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.paternalSurname }}</td>
+                        <td>{{ item.maternalSurname }}</td>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.phone }}</td>
+                        <td>{{ item.age }}</td>
+                        <td>{{ item.birthdate }}</td>
+                        <td>{{ item.ssn }}</td>
                     </tr>
                 </tbody>
             </table>
+        </CardBox>
 
+        <CardBox v-else>
+            <p>No data available.</p>
+        </CardBox>
 
-
-            <Pagination :currentPage="Periodo.current_page" :links="Periodo.links"
-                :total="Periodo.links.length - 2"></Pagination>
-        </CardBox> -->
-
+        <Pagination :data="format" />
     </LayoutMain>
 </template>
+
+
+<!-- <script setup>
+import CardBox from "@/Components/CardBox.vue";
+import LayoutMain from "@/Layouts/LayoutMain.vue";
+import SectionTitleLineWithButton from "@/Components/SectionTitleLineWithButton.vue";
+import Pagination from "@/Shared/Pagination.vue";
+import { ref } from "vue";
+
+const props = defineProps({
+    title: {
+        type: String,
+        required: true,
+    },
+    format: {
+        type: Object,
+        default: () => ({}),
+        required: true,
+    },
+});
+</script>
+
+<template>
+    <LayoutMain>
+        <SectionTitleLineWithButton
+            :title="title"
+            main
+        />
+        
+        <CardBox v-if="format.data.length > 0">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Paternal Surname</th>
+                        <th>Maternal Surname</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Age</th>
+                        <th>Birthdate</th>
+                        <th>SSN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in format.data" :key="item.id">
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.paternalSurname }}</td>
+                        <td>{{ item.maternalSurname }}</td>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.phone }}</td>
+                        <td>{{ item.age }}</td>
+                        <td>{{ item.birthdate }}</td>
+                        <td>{{ item.ssn }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </CardBox>
+        <CardBox v-else>
+            <p>No data available.</p>
+        </CardBox>
+    </LayoutMain>
+</template> -->
+
