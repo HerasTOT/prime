@@ -1,7 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
-
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
@@ -9,8 +8,6 @@ defineProps({
     phpVersion: String,
     servicios: Object,
 });
-
-
 </script>
 
 <template>
@@ -32,8 +29,8 @@ defineProps({
                     <div class="flex mr-20">
                         <Link :href="route('login')" class="text-2xl font-bold text-gray-500 underline">Login
                         </Link>
-                        
-                        <Link :href="route('login')" class=" ml-16 text-2xl font-bold text-gray-500 underline" >Format
+                        <!-- aqui debe de ir la ruta del format create -->
+                        <Link :href="route('entryformat.create')" class=" ml-16 text-2xl font-bold text-gray-500 underline" >Format
                         
                         </Link>
                         <!-- <Link v-if="canRegister" :href="route('register')"

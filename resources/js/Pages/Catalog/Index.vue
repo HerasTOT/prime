@@ -6,11 +6,13 @@ import CardBox from "@/Components/CardBox.vue";
 import LayoutMain from "@/Layouts/LayoutMain.vue";
 import BaseButtons from "@/Components/BaseButtons.vue";
 import BaseButton from "@/Components/BaseButton.vue";
-import Pagination from '@/Shared/Pagination.vue';
 import SectionTitleLineWithButton from "@/Components/SectionTitleLineWithButton.vue";
+import Pagination from '@/Shared/Pagination.vue';
 import {
     mdiBallotOutline,
     mdiInformation,
+    mdiTrashCan,
+    mdiApplicationEdit,
     mdiPencil,
     mdiBroom,
     mdiMagnify,
@@ -22,7 +24,7 @@ const props = defineProps({
         type: String,
         required: true,
     },
-    format: {
+    catalog: {
         type: Object,
         required: true,
     },
@@ -45,6 +47,7 @@ const props = defineProps({
         required: false,
         default: "created_at",
     },
+    
 });
 
 const search = ref(props.search);
@@ -92,14 +95,7 @@ const opts = [
             { title: "Ordenar desde Z - A", direction: "desc" },
         ],
     },
-    {
-        label: "Email",
-        key: "email",
-        menu: [
-            { title: "Ordenar desde A - Z", direction: "asc" },
-            { title: "Ordenar desde Z - A", direction: "desc" },
-        ],
-    },
+
 ];
 
 provide("filterBy", filterBy);
@@ -116,7 +112,7 @@ provide("filterBy", filterBy);
             main
         />
 
-        <form @submit.prevent="filtrar" class="w-full mb-5">
+        <form @submit.prevent="filtrar"  class="w-full mb-5">
     <div class="flex flex-col md:flex-row justify-between">
         <div class="flex w-1/2">
             <!-- Filtro de búsqueda -->
@@ -125,7 +121,7 @@ provide("filterBy", filterBy);
                     type="search"
                     id="search-dropdown"
                     class="block p-2.5 md:h-11 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-l-lg md:rounded-l-none rounded-r-lg md:border-l-gray-300 border-l-gray-300 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                    placeholder="Ingresa un parametro de búsqueda"
+                    placeholder="search"
                     v-model="search"
                 />
                 <BaseButton
@@ -146,7 +142,7 @@ provide("filterBy", filterBy);
                 :routeName="`${routeName}create`"
                 color="info"
                 :icon="mdiPlus"
-                label="Contestar formato"
+                label="Add work"
                 class="w-full"
             />
         </BaseButtons>
@@ -154,42 +150,48 @@ provide("filterBy", filterBy);
 </form>
 
 
-        <CardBox v-if="format.data.length > 0">
+        <CardBox v-if="catalog.data.length > 0">
             <table>
                 <thead>
                     <tr>
-                        <th />
                         <th>
+                            Jobs
                             <Dropdown title="Nombre" :options="opts" />
                         </th>
                         <th>
-                            <Dropdown title="Email" :options="opts" />
+                            Actions
                         </th>
-                        <th>Edad</th>
-                        <th>Fecha de nacimiento</th>
-                        <th>SSN</th>
+
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in format.data" :key="item.id">
+                    <tr v-for="item in catalog.data" :key="item.id">
                         <td>{{ item.name }}</td>
-                        <td>{{ item.paternalSurname }}</td>
-                        <td>{{ item.maternalSurname }}</td>
-                        <td>{{ item.email }}</td>
-                        <td>{{ item.phone }}</td>
-                        <td>{{ item.age }}</td>
-                        <td>{{ item.birthdate }}</td>
-                        <td>{{ item.ssn }}</td>
+                        <td class="before:hidden lg:w-1 whitespace-nowrap">
+                            <BaseButtons type="justify-start lg:justify-end" no-wrap>
+                                <BaseButton color="warning" :icon="mdiApplicationEdit" small
+                                    :href="route(`${routeName}edit`, item.id)" />
+                                <BaseButton color="danger" :icon="mdiTrashCan" small @click="eliminar(item.id)" />
+                            </BaseButtons>
+                        </td>
                     </tr>
+                    
                 </tbody>
             </table>
+            <Pagination
+            :currentPage="catalog.current_page"
+            :links="catalog.links"
+            :total="catalog.total"
+        />
         </CardBox>
 
         <CardBox v-else>
             <p>No data available.</p>
         </CardBox>
 
-        <Pagination :data="format" />
+        
+
+
     </LayoutMain>
 </template>
 

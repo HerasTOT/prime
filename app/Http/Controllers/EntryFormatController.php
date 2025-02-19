@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\EntryFormat;
+use App\Models\Catalog;
+use App\Models\Experience;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Response;
 use Inertia\Inertia;
 
@@ -20,16 +23,17 @@ class EntryFormatController extends Controller
      
      public function __construct()
      {
-        $this->middleware("permission:{$this->module}.store")->only(['store', 'create']); 
+        
         $this->source = 'EntryFormat/';
          $this->model = new EntryFormat();
          $this->routeName = 'entryformat.';
  
-         $this->middleware("permission:{$this->module}.index")->only(['index', 'show']);
-         $this->middleware("permission:{$this->module}.store")->only(['store', 'create']);
-         $this->middleware("permission:{$this->module}.update")->only(['edit', 'update']);
-         $this->middleware("permission:{$this->module}.delete")->only(['destroy']);
-     }
+          $this->middleware("permission:{$this->module}.index")->only(['index', 'show']);
+    //      $this->middleware("permission:{$this->module}.store")->only(['store', 'create']);
+          $this->middleware("permission:{$this->module}.update")->only(['edit', 'update']);
+          $this->middleware("permission:{$this->module}.delete")->only(['destroy']);
+   
+    }
 
      public function index(Request $request): Response
      {
@@ -55,18 +59,19 @@ class EntryFormatController extends Controller
      
          // Ordenar los resultados según los parámetros 'order' y 'direction'
          $formats = $formats->orderBy($order, $direction);
-     
-         // Paginación de los resultados
          $formats = $formats->paginate(10)->withQueryString();
-     
-         // Pasar los datos a la vista
+         
+
+         
+
          return Inertia::render("EntryFormat/Index", [
-             'title'      => 'Formato de Registro',
-             'routeName' => $this->routeName,
+             'title'       => 'Formato de Registro',
+             'routeName'   => $this->routeName,
              'format'      => $formats,
              'search'      => $request->search ?? '',
              'order'       => $order,
              'direction'   => $direction,
+             
          ]);
      }
      
@@ -76,9 +81,11 @@ class EntryFormatController extends Controller
      */
     public function create()
     {
-        
+        $catalog = Catalog::select('id', 'name')->get();
+
         return Inertia::render("EntryFormat/Create",[
             'titulo'      => 'Formulario',
+            'catalog'     => $catalog,
             'routeName'      => $this->routeName,
         ]);
     }
@@ -88,18 +95,8 @@ class EntryFormatController extends Controller
      */
     public function store(Request $request)
 {
-    // $request->validate([
-    //     'name' => 'required|string|max:255',
-    //     'paternalSurname' => 'required|string|max:255',
-    //     'maternalSurname' => 'required|string|max:255',
-    //     'email' => 'required|email|max:255|unique:entry_formats,email',
-    //     'phone' => 'required|string|max:20',
-    //     'age' => 'required|integer|min:0',
-    //     'birthdate' => 'required|date',
-    //     'ssn' => 'required|string|max:20|unique:entry_formats,ssn',
-    // ]);
-
-    EntryFormat::create([
+    
+    $entryFormat = EntryFormat::create([
         'name' => $request->input('name'),
         'paternalSurname' => $request->input('paternalSurname'),
         'maternalSurname' => $request->input('maternalSurname'),
@@ -110,7 +107,47 @@ class EntryFormatController extends Controller
         'ssn' => $request->input('ssn'),
     ]);
 
-    return redirect()->route("entryformat.index")->with('message', 'Registro creado con éxito');
+    $email = $request->email;
+    $entryFormatId = $entryFormat->id;
+
+    $catalogIds = $request->catalog_ids; // Array de IDs
+    $positionIds = $request->position_interested;
+
+    // Insertar los datos en la tabla pivot "user_jobs"
+    foreach ($catalogIds as $catalogId) {
+        DB::table('user_jobs')->insert([
+            'job' => $catalogId,
+            'entryformat_id' => $entryFormatId, // Ahora relacionamos con entry_formats correctamente
+            'type' => 'previous', // Tipo siempre "previous"
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    }
+
+    foreach ($positionIds as $positionId) {
+        DB::table('user_jobs')->insert([
+            'job' => $positionId,
+            'entryformat_id' => $entryFormatId, 
+            'type' => 'interested', 
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    }
+
+    Experience::create([
+        'entryformat_id' => $entryFormatId,
+        'company' => $request->input('company'),
+        'position' => $request->input('position'),
+        'address' => $request->input('address'),
+        'supervisor' => $request->input('supervisor'),
+        'company_phone' => $request->input('company_phone'),
+        'salary' => $request->input('salary'),
+        'start_date' => $request->input('start_date'),
+        'end_date' => $request->input('end_date'),
+        'termination_reason' => $request->input('termination_reason'),
+    ]);
+
+    return redirect()->route("welcome")->with('message', 'Registro creado con éxito');
 }
 
 
