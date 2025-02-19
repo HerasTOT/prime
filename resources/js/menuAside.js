@@ -1,6 +1,7 @@
 import {
     mdiAccountCircle,
     mdiMonitor,
+    mdiFormatListNumberedRtl,
     mdiCogOutline, 
     mdiListBox,
     mdiPlaylistEdit ,
@@ -28,6 +29,7 @@ import {
     mdiAccountCreditCard,
     mdiSourceBranch,
     mdiCalendarMonth,
+    mdiBriefcase,
 } from "@mdi/js";
 // import Icon from '@mdi/react';
 
@@ -43,6 +45,23 @@ export default [
         icon: mdiMonitor,
         label: "Formato de inicio",
         
+    },
+    
+    {
+        label: "Catalog",
+        icon: mdiFormatListNumberedRtl,
+        //role: "Admin",
+        //permission: "modulo.seguridad",
+        menu: [
+            {
+                label: "Jobs",
+                route: "catalog.index",
+                icon: mdiBriefcase,
+                //permission: "module.index",
+            }
+            
+            
+        ],
     },
     
 

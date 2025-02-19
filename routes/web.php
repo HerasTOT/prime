@@ -24,6 +24,7 @@ use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\TratamientosController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EntryFormatController;
+use App\Http\Controllers\CatalogController;
 
 
 use App\Http\Controllers\WelcomeController;
@@ -74,7 +75,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('user', UserController::class)->parameters(['user' => 'user']);
 
     Route::resource('entryformat', EntryFormatController::class)->names('entryformat');
+    Route::resource('catalog', CatalogController::class)->names('catalog');
     
+
 });
 Route::get('/entryformat/create', [EntryFormatController::class, 'create'])->name('entryformat.create');
 Route::post('/entryformat', [EntryFormatController::class, 'store'])->name('entryformat.store');
