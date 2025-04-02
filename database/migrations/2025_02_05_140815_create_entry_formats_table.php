@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('entry_formats', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('paternalSurname');
-            $table->string('maternalSurname');
+            $table->string('secondName')->nullable();
+            $table->string('lastName');
+            $table->string('secondLastname')->nullable(); 
             $table->string('email')->unique();
             $table->string('phone');
             $table->integer('age');

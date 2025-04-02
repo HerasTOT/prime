@@ -150,11 +150,11 @@ export default {
                     <FormField label="First Name">
                         <FormControl v-model="form.name" placeholder="Enter first name" />
                     </FormField>
-                    <FormField label="Paternal Surname">
-                        <FormControl v-model="form.paternalSurname" placeholder="Enter paternal surname" />
+                    <FormField label="Second Name">
+                        <FormControl v-model="form.secondName" placeholder="Enter second name" />
                     </FormField>
-                    <FormField label="Maternal Surname">
-                        <FormControl v-model="form.maternalSurname" placeholder="Enter maternal surname" />
+                    <FormField label="Last Name">
+                        <FormControl v-model="form.lastName" placeholder="Enter last name" />
                     </FormField>
 
                     <FormField label="Email">

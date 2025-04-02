@@ -99,39 +99,25 @@ class EntryFormatController extends Controller
 {
     
    
-    if ($request->hasFile('idFront')) {
-        $file = $request->file('idFront');
+    
 
-        // Generar un nombre aleatorio para el archivo manteniendo la extensión original
-        $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-
-        // Guardar el archivo en storage/app/id/
-        $path = $file->storeAs('id', $filename);
-
-        // Guardar la ruta en la base de datos en la columna 'idFront'
-        $document = Document::create([
-            'idFront' => $path // Guarda la ruta en la base de datos
-        ]);
-
-        return response()->json(['message' => 'Archivo guardado con éxito', 'path' => $path]);
-    }
-
-    return response()->json(['error' => 'No se recibió ningún archivo'], 400);
-   
     $entryFormat = EntryFormat::create([
         'name' => $request->input('name'),
-        'paternalSurname' => $request->input('paternalSurname'),
-        'maternalSurname' => $request->input('maternalSurname'),
+        'secondName' => $request->input('secondName'),
+        'lastName' => $request->input('lastName'),
+        'secondLastname' => $request->input('secondLastname'),
         'email' => $request->input('email'),
         'phone' => $request->input('phone'),
         'age' => $request->input('age'),
         'birthdate' => $request->input('birthdate'),
         'ssn' => $request->input('ssn'),
     ]);
+    
     //mejorar logica
     $entryFormatId = $entryFormat->id;
     $catalogIds = $request->catalog_ids; // Array de IDs
     $positionIds = $request->position_interested;
+
 
     // Insertar los datos en la tabla pivot "user_jobs"
     foreach ($catalogIds as $catalogId) {
@@ -166,6 +152,33 @@ class EntryFormatController extends Controller
         'end_date' => $request->input('end_date'),
         'termination_reason' => $request->input('termination_reason'),
     ]);
+
+
+    if ($request->hasFile('idFront')) {
+        $file = $request->file('idFront');
+
+        // Generar un nombre aleatorio con la extensión original
+        $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+
+        // Guardar el archivo en storage/app/id/
+        $path = $file->storeAs('id', $filename);
+
+        // Guardar la misma imagen en todas las columnas
+        $document = Document::create([
+            'idFront'   => $path,
+            'idBack'    => $path,
+            'security'  => $path,
+            'selfie'    => $path,
+            'cv'        => $path,
+            'signature' => $path,
+            'date' => now()->format('Y-m-d H:i:s'),
+            'entryformat_id'=> $entryFormatId
+        ]);
+
+        return response()->json(['message' => 'Archivo guardado con éxito', 'path' => $path]);
+    }
+
+    return response()->json(['error' => 'No se recibió ningún archivo'], 400);
 
 
     return redirect()->route("welcome")->with('message', 'Registro creado con éxito');
