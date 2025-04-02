@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Str;
 
 use App\Models\EntryFormat;
 use App\Models\Catalog;
+use App\Models\Document;
 use App\Models\Experience;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,7 +31,7 @@ class EntryFormatController extends Controller
          $this->routeName = 'entryformat.';
  
           $this->middleware("permission:{$this->module}.index")->only(['index', 'show']);
-    //      $this->middleware("permission:{$this->module}.store")->only(['store', 'create']);
+    //    $this->middleware("permission:{$this->module}.store")->only(['store', 'create']);
           $this->middleware("permission:{$this->module}.update")->only(['edit', 'update']);
           $this->middleware("permission:{$this->module}.delete")->only(['destroy']);
    
@@ -84,7 +86,7 @@ class EntryFormatController extends Controller
         $catalog = Catalog::select('id', 'name')->get();
 
         return Inertia::render("EntryFormat/Create",[
-            'titulo'      => 'Formulario',
+            'titulo'      => 'Format',
             'catalog'     => $catalog,
             'routeName'      => $this->routeName,
         ]);
@@ -96,6 +98,26 @@ class EntryFormatController extends Controller
     public function store(Request $request)
 {
     
+   
+    if ($request->hasFile('idFront')) {
+        $file = $request->file('idFront');
+
+        // Generar un nombre aleatorio para el archivo manteniendo la extensión original
+        $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+
+        // Guardar el archivo en storage/app/id/
+        $path = $file->storeAs('id', $filename);
+
+        // Guardar la ruta en la base de datos en la columna 'idFront'
+        $document = Document::create([
+            'idFront' => $path // Guarda la ruta en la base de datos
+        ]);
+
+        return response()->json(['message' => 'Archivo guardado con éxito', 'path' => $path]);
+    }
+
+    return response()->json(['error' => 'No se recibió ningún archivo'], 400);
+   
     $entryFormat = EntryFormat::create([
         'name' => $request->input('name'),
         'paternalSurname' => $request->input('paternalSurname'),
@@ -106,10 +128,8 @@ class EntryFormatController extends Controller
         'birthdate' => $request->input('birthdate'),
         'ssn' => $request->input('ssn'),
     ]);
-
-    $email = $request->email;
+    //mejorar logica
     $entryFormatId = $entryFormat->id;
-
     $catalogIds = $request->catalog_ids; // Array de IDs
     $positionIds = $request->position_interested;
 
@@ -146,6 +166,7 @@ class EntryFormatController extends Controller
         'end_date' => $request->input('end_date'),
         'termination_reason' => $request->input('termination_reason'),
     ]);
+
 
     return redirect()->route("welcome")->with('message', 'Registro creado con éxito');
 }
