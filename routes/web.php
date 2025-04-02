@@ -26,6 +26,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EntryFormatController;
 use App\Http\Controllers\CatalogController;
 
+use Illuminate\Http\Request;
 
 use App\Http\Controllers\WelcomeController;
 use App\Models\EntryFormat;
@@ -82,5 +83,9 @@ Route::middleware('auth')->group(function () {
 Route::get('/entryformat/create', [EntryFormatController::class, 'create'])->name('entryformat.create');
 Route::post('/entryformat', [EntryFormatController::class, 'store'])->name('entryformat.store');
 
+Route::get('/checkEmail', function (Request $request) {
+    $emailExists = EntryFormat::where('email', $request->email)->exists();
+    return response()->json(['exists' => $emailExists]);
+});
 
 require __DIR__ . '/auth.php';
