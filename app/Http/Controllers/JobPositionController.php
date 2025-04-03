@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Document;
-use Illuminate\Http\Request;
+use App\Models\JobPosition;
+use App\Http\Requests\StoreJobPositionRequest;
+use App\Http\Requests\UpdateJobPositionRequest;
 
-class DocumentController extends Controller
+class JobPositionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,7 +27,7 @@ class DocumentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreJobPositionRequest $request)
     {
         //
     }
@@ -34,7 +35,7 @@ class DocumentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Document $document)
+    public function show(JobPosition $jobPosition)
     {
         //
     }
@@ -42,7 +43,7 @@ class DocumentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Document $document)
+    public function edit(JobPosition $jobPosition)
     {
         //
     }
@@ -50,7 +51,7 @@ class DocumentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Document $document)
+    public function update(UpdateJobPositionRequest $request, JobPosition $jobPosition)
     {
         //
     }
@@ -58,7 +59,7 @@ class DocumentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Document $document)
+    public function destroy(JobPosition $jobPosition)
     {
         //
     }

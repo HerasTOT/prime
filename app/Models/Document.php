@@ -9,7 +9,7 @@ class Document extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'email', 'phone',
-        'idFront', 'idBack', 'security', 'selfie', 'cv', 'signature'
+        'name',
+        'description',
     ];
 }

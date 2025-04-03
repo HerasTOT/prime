@@ -9,17 +9,20 @@ class Experience extends Model
 {
     use HasFactory;
     protected $fillable = [
-        
-        'email',
-        'company',
         'position',
-        'address',
+        'company',
         'supervisor',
+        'address',
         'company_phone',
         'salary',
         'start_date',
         'end_date',
         'termination_reason',
-        'entryformat_id'
+        'entry_format_id'
     ];
+
+    public function entryFormat()
+    {
+        return $this->belongsTo(EntryFormat::class);
+    }
 }

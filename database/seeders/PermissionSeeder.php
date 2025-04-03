@@ -15,7 +15,6 @@ class PermissionSeeder extends Seeder
     {
         // PERMISOS DE MODULOS DEL SISTEMA
         Permission::create(['name' => 'modulo.seguridad', 'guard_name' => 'web', 'description' => 'Administración de Seguridad', 'module_key' => 'seguridad']);
-        // Permission::create(['name' => 'modulo.catalogos', 'guard_name' => 'web', 'description' => 'Administración catálogos', 'module_key' => 'cat']);
 
         // PERMISOS DE SEGURIDAD
         Permission::create(['name' => 'module.index', 'guard_name' => 'web', 'description' => 'Leer Registros', 'module_key' => 'seguridad']);

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->text('termination_reason')->nullable();
-            $table->foreignId('entryformat_id')->constrained('entry_formats')->onDelete('cascade');
+            $table->foreignId('entry_format_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

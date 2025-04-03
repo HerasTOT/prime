@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_jobs', function (Blueprint $table) {
+        Schema::create('job_positions', function (Blueprint $table) {
             $table->id();
-            $table->Integer('job');
-            $table->foreignId('entryformat_id')->constrained('entry_formats')->onDelete('cascade');
-            $table->enum('type', ['previous', 'interested']); 
+            $table->string('name');
+            $table->text('description')->nullable();            
             $table->timestamps();
         });
-        
     }
 
     /**
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_jobs');
+        Schema::dropIfExists('job_positions');
     }
 };

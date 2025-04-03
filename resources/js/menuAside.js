@@ -48,14 +48,14 @@ export default [
     },
     
     {
-        label: "Catalog",
+        label: "Catalogs",
         icon: mdiFormatListNumberedRtl,
         //role: "Admin",
         //permission: "modulo.seguridad",
         menu: [
             {
                 label: "Jobs",
-                route: "catalog.index",
+                route: "jobPosition.index",
                 icon: mdiBriefcase,
                 //permission: "module.index",
             }

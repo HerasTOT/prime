@@ -1,6 +1,9 @@
 <script setup>
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
+import LayoutWelcome from '@/Layouts/LayoutWelcome.vue';
+import NotificationBar from '@/Components/NotificationBar.vue';
+import { mdiInformation } from '@mdi/js';
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
@@ -12,46 +15,16 @@ defineProps({
 
 <template>
     <Head title="Bienvenido" />
-    <div class="relative flex items-top justify-center min-h-screen bg-gray-100 sm:items-center sm:pt-0">
-        <div v-if="canLogin" class="hidden absolute top-0 right-0 px-6 py-4 sm:block w-full h-32"
-            style="background-color: #02143a;">
-            <div v-if="$page.props.user" class="flex justify-between items-center">
-                
-                <div class="flex mr-20">
-                    <Link :href="route('dashboard')" class="text-2xl font-bold text-gray-500 underline">Inicio</Link>
-                </div>
-            </div>
-            <template v-else>
-                <div class="flex justify-between items-center">
-                    <div class="">
-                       
-                    </div>
-                    <div class="flex mr-20">
-                        <Link :href="route('login')" class="text-2xl font-bold text-gray-500 underline">Login
-                        </Link>
-                        <!-- aqui debe de ir la ruta del format create -->
-                        <Link :href="route('entryformat.create')" class=" ml-16 text-2xl font-bold text-gray-500 underline" >Format
-                        
-                        </Link>
-                        <!-- <Link v-if="canRegister" :href="route('register')"
-                            class="ml-4 text-2xl font-bold text-gray-500 underline">
-                        Registrarse</Link> -->
-                    </div>
-                </div>
-            </template>
-        </div>
+    <LayoutWelcome>
+        <!-- Contenido -->
+        <section data-aos="fade-down" class="min-h-screen max-w-7xl mx-auto py-10 bg-transparent dark:bg-blue-950">
+            <NotificationBar v-if="$page.props.flash.success" color="success" :icon="mdiInformation" :outline="false">
+                {{ $page.props.flash.success }}
+            </NotificationBar>
 
-        <div class="w-3/4 mx-auto sm:px-6 lg:px-8 mt-32">
-            <div class="p-4">
-                <h2 class="font-semibold text-2xl text-gray-800 leading-tight text-center mt-10">
-                    Conoce nuestros servicios
-                </h2>
-                
-
-                
-            </div>
-        </div>
-    </div>
+            <NotificationBar v-if="$page.props.flash.error" color="danger" :icon="mdiInformation" :outline="false">
+                {{ $page.props.flash.error }}
+            </NotificationBar>
+        </section>
+    </LayoutWelcome>
 </template>
-
-<style></style>

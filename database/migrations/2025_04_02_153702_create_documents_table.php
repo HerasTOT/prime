@@ -13,14 +13,8 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->string('idFront');
-            $table->string('idBack');
-            $table->string('security');
-            $table->string('selfie');
-            $table->string('cv');
-            $table->string('signature');
-            $table->date('date');
-            $table->foreignId('entryformat_id')->constrained('entry_formats')->onDelete('cascade');
+            $table->string('name');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
