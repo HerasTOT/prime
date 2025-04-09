@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('entry_formats', function (Blueprint $table) {
             $table->id();
-            $table->string('names');
-            $table->string('first_surname');
-            $table->string('second_surname')->nullable();
+            $table->string('name');
+            $table->string('middle_name')->nullable();
+            $table->string('last_name');
+            $table->string('mother_last_name')->nullable();
             $table->string('email');
             $table->string('phone');
             $table->integer('age');

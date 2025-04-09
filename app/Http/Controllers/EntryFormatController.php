@@ -104,7 +104,7 @@ class EntryFormatController extends Controller
 
             $this->storageFiles($request, $entryFormat);
 
-            return redirect()->back()->with('success', 'Registro creado con éxito');
+            return redirect()->route('welcome')->with('success', 'Registro creado con éxito');
         } catch (\Exception $e) {
             Log::error('Error form: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Error form');
@@ -113,20 +113,33 @@ class EntryFormatController extends Controller
 
     private function storageFiles(Request $request, EntryFormat $entryFormat)
     {
-        $fileStorage = $request->file('signature');
-        if ($fileStorage) {
-            $fileName = "{$entryFormat->id}-{$fileStorage->getClientOriginalName()}.jpg";
-            $filePath = $fileStorage->storeAs('documents', $fileName, 'private');
+        $files = [
+            'idFront'   => ['folder' => 'idFront',   'document_id' => 1],
+            'idBack'    => ['folder' => 'idBack',    'document_id' => 2],
+            'security'  => ['folder' => 'security',  'document_id' => 3],
+            'selfie'    => ['folder' => 'selfie',    'document_id' => 4],
+            'cv'        => ['folder' => 'cv',        'document_id' => 5],
+            'signature' => ['folder' => 'documents', 'document_id' => 6],
+        ];
 
-            $entryFormat->files()->create([
-                'name' => $fileName,
-                'path' => $filePath,
-                'size' => $fileStorage->getSize(),
-                'mime_type' => $fileStorage->getMimeType(),
-                'document_id' => 2,
-            ]);
+        foreach ($files as $input => $config) {
+            if ($request->hasFile($input)) {
+                $file = $request->file($input);
+
+                $fileName = "{$entryFormat->id}-{$file->getClientOriginalName()}.jpg";
+                $filePath = $file->storeAs($config['folder'], $fileName, 'private');
+
+                $entryFormat->files()->create([
+                    'name'        => $fileName,
+                    'path'        => $filePath,
+                    'size'        => $file->getSize(),
+                    'mime_type'   => $file->getMimeType(),
+                    'document_id' => $config['document_id'],
+                ]);
+            }
         }
     }
+
 
     /**
      * Display the specified resource.

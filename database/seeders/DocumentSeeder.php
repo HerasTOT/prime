@@ -14,7 +14,11 @@ class DocumentSeeder extends Seeder
     public function run(): void
     {
         Document::insert([
+            ['name' => 'idFront'],
+            ['name' => 'idBack'],
+            ['name' => 'security'],
             ['name' => 'selfie'],
+            ['name' => 'cv'],
             ['name' => 'signature'],
         ]);
     }

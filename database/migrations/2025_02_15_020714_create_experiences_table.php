@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('supervisor');
             $table->string('address');
             $table->string('company_phone');
-            $table->string('salary');
+            $table->decimal('salary',11,2);
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->text('termination_reason')->nullable();

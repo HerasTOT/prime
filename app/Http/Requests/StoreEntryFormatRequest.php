@@ -22,9 +22,10 @@ class StoreEntryFormatRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'names'                     => 'required|string|max:255',
-            'first_surname'              => 'required|string|max:255',
-            'second_surname'             => 'nullable|string|max:255',
+            'name'                      => 'required|string|max:255',
+            'middle_name'               => 'nullable|string|max:255',
+            'last_name'                 => 'required|string|max:255',
+            'mother_last_name'          => 'nullable|string|max:255',
             'email'                     => 'required|string|email|max:255',
             'phone'                     => 'required|string|regex:/^\d{10}$/',
             'age'                       => 'required|integer|min:18|max:99',
@@ -49,35 +50,8 @@ class StoreEntryFormatRequest extends FormRequest
             'idBack'                    => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'security'                  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'selfie'                    => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-            'cv'                        => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+            'cv'                        => 'nullable|file|mimes:pdf,doc,docx,png|max:5120',
             'signature'                 => 'required|file|mimes:jpg,jpeg,png|max:1024',
         ];
-
-        // return 
-        //     'names'                     => 'nullable|string|max:255',
-        //     'firstSurname'              => 'nullable|string|max:255',
-        //     'secondSurname'             => 'nullable|string|max:255',
-        //     'email'                     => 'nullable|string|email|max:255',
-        //     'phone'                     => 'nullable|string|regex:/^\d{10}$/',
-        //     'age'                       => 'nullable|integer|min:18|max:99',
-        //     'birthdate'                 => 'nullable|date|before:today',
-        //     'ssn'                       => 'nullable|numeric|regex:/^\d{9}$/',
-        //     'company'                   => 'nullable|string|max:255',
-        //     'address'                   => 'nullable|string|max:255',
-        //     'company_phone'             => 'nullable|string|regex:/^\d{10}$/',
-        //     'salary'                    => 'nullable|numeric|min:0',
-        //     'start_date'                => 'nullable|date|before_or_equal:end_date',
-        //     'end_date'                  => 'nullable|date|after_or_equal:start_date',
-        //     'termination_reason'        => 'nullable|string|max:500',
-        //     'supervisor'                => 'nullable|string|max:255',
-
-        //     // Validación para archivos
-        //     'idFront'                   => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-        //     'idBack'                    => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-        //     'security'                  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-        //     'selfie'                    => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-        //     'cv'                        => 'nullable|file|mimes:pdf,doc,docx|max:5120',
-        //     'signature'                 => 'nullable|file|mimes:jpg,jpeg,png|max:1024',
-        // ];
     }
 }

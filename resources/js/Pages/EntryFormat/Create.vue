@@ -38,9 +38,10 @@ const props = defineProps({
 });
 
 const form = useForm({
-    names: null,
-    first_surname: null,
-    second_surname: null,
+    name: null,
+    last_name: null,
+    middle_name: null,
+    mother_last_name:null,
     email: null,
     phone: null,
     age: null,
@@ -169,7 +170,9 @@ provide("useSignature", signatureInstance);
                         <BaseButton v-if="step === 5" @click="handleSubmit" color="success" label="Submit"
                             :icon="mdiContentSaveCheck" roundedFull />
                     </BaseButtons>
+
                 </form>
+               {{ form.errors}}
             </CardBox>
         </CardBox>
     </LayoutWelcome>

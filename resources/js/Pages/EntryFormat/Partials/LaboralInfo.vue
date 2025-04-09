@@ -2,8 +2,15 @@
 import FormControl from '@/Components/FormControl.vue';
 import FormField from '@/Components/FormField.vue';
 import { inject } from 'vue';
+import { mdiCurrencyUsd } from '@mdi/js';
 
 const form = inject('form');
+
+const formatSalary = () => {
+    if (form.salary !== null && form.salary !== '') {
+        form.salary = parseFloat(form.salary).toFixed(2)
+    }
+}
 
 </script>
 
@@ -20,12 +27,18 @@ const form = inject('form');
     <FormField label="Address" required>
         <FormControl v-model="form.address" placeholder="Enter the company address" />
     </FormField>
-    <FormField label="Company Phone" required>
-        <FormControl v-model="form.company_phone" placeholder="Enter the company phone" />
+    <FormField label="Company Phone" required :error="form.errors.company_phone">
+        <FormControl v-model="form.company_phone" type="tel" placeholder="Enter the company phone" maxlength="10"
+            pattern="[0-9]{10}" @input="form.company_phone = form.company_phone.replace(/\D/g, '').slice(0, 10)" />
     </FormField>
-    <FormField label="Salary" required>
-        <FormControl v-model="form.salary" type="number" placeholder="Enter your previous salary" />
+
+    <FormField label="Salary" required :error="form.errors.salary">
+        <FormControl v-model="form.salary" :icon="mdiCurrencyUsd" type="number" placeholder="Enter your previous salary"
+            min="0" step="0.01" class="pl-6" @blur="formatSalary" />
     </FormField>
+
+
+
     <FormField label="Enter the date you started" required>
         <FormControl v-model="form.start_date" type="date" />
     </FormField>

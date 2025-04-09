@@ -9,9 +9,10 @@ class EntryFormat extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'names',
-        'first_surname',
-        'second_surname',
+        'name',
+        'middle_name',
+        'last_name',
+        'mother_last_name',
         'email',
         'phone',
         'age',

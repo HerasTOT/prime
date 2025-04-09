@@ -13,26 +13,27 @@ const { signature, options, undoCanvas, clearCanvas } = inject('useSignature');
 
 <template>
     <h2 class="text-xl font-bold mb-4">Document</h2>
-    <FormField label="Front of ID" help="Select a photo of the front of your ID">
+    <FormField label="Front of ID" help="Select a photo of the front of your ID" :error="form.errors.idFront">
         <FormControl type="file" height="h-10.5" @input="form.idFront = $event.target.files[0]" />
     </FormField>
 
-    <FormField label="Back of ID" help="Select a photo from the back of your ID">
+    <FormField label="Back of ID" help="Select a photo from the back of your ID" :error="form.errors.idBack">
         <FormControl type="file" height="h-10.5" @input="form.idBack = $event.target.files[0]" />
     </FormField>
 
-    <FormField label="Social security" help="Select a photo of your social security number">
+    <FormField label="Social security" help="Select a photo of your social security number" :error="form.errors.security">
         <FormControl type="file" height="h-10.5" @input="form.security = $event.target.files[0]" />
     </FormField>
 
-    <FormField label="Selfie" help="Select a selfie">
+    <FormField label="Selfie" help="Select a selfie" :error="form.errors.selfie">
         <FormControl type="file" height="h-10.5" @input="form.selfie = $event.target.files[0]" />
 
     </FormField>
 
-    <FormField label="CV" help="Select a file of your CV">
+    <FormField label="CV" help="Select a file of your CV" :error="form.errors.cv">
         <FormControl type="file" height="h-10.5" @input="form.cv = $event.target.files[0]" />
     </FormField>
+        
     <FormField required label="Signature" :error="form.errors.signature">
         <div class="relative bg-gray-100 border border-black">
             <VueSignaturePad ref="signature" height="400px" width="auto" :options="options" />
@@ -44,5 +45,5 @@ const { signature, options, undoCanvas, clearCanvas } = inject('useSignature');
         </div>
     </FormField>
 
-    {{ signature }}
+    
 </template>
