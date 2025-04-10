@@ -23,7 +23,7 @@ import { mdiChevronRight } from '@mdi/js';
 import LayoutWelcome from '@/Layouts/LayoutWelcome.vue';
 import CardBox from '@/Components/CardBox.vue';
 import BaseButtons from '@/Components/BaseButtons.vue';
-import { error422 } from '@/Hooks/errorsForm';
+import { error422 } from '@/Hooks/useErrorsForm';
 import PersonalInfo from './Partials/PersonalInfo.vue';
 import LaboralInfo from './Partials/LaboralInfo.vue';
 import Documents from './Partials/Documents.vue';
@@ -75,18 +75,20 @@ const form = useForm({
 });
 
 const step = ref(1);
-const signatureInstance = useSignature(); // Solo una instancia
+const signatureInstance = useSignature();
 
 const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-const nextStep = () => {
-    if (step.value < 5) {
+const nextStep = async () => {
+    const isValid = await validateForm();
+    if (isValid) {
         step.value++;
         scrollToTop();
     }
 };
+
 
 const prevStep = () => {
     if (step.value > 1) {
@@ -94,6 +96,32 @@ const prevStep = () => {
         scrollToTop();
     }
 };
+
+const validateForm = async () => {
+    form.reset('errors');
+    if (step.value < 5) {
+        return new Promise((resolve) => {
+            form.transform(data => ({
+                ...data,
+                step: step.value
+            })).post(route('entryFormat.validateFields'), {
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () => {
+                    resolve(true);
+                },
+                onError: () => {
+                    resolve(false);
+                },
+                onFinish: () => {
+                    resolve(false);
+                },
+            });
+        });
+    }
+    resolve(false);
+};
+
 
 const handleSubmit = () => {
     const signaturePad = signatureInstance.signature.value;

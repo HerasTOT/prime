@@ -58,6 +58,7 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/entryformat/create', [EntryFormatController::class, 'create'])->name('entryformat.create');
+Route::post('entryFormat-validated', [EntryFormatController::class, 'validateFields'])->name('entryFormat.validateFields');
 Route::post('/entryformat', [EntryFormatController::class, 'store'])->name('entryformat.store');
 
 Route::middleware('auth')->group(function () {

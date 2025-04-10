@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\EntryFormatController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\UserController;
 
@@ -64,5 +65,4 @@ Route::middleware('auth')->group(function () {
     // APIS
     Route::get('file/serve/{file}', [FileController::class, 'serveFile'])->name('file.serve')->middleware('signed');
     Route::post('update-photo/{id}', [UserController::class, 'updatePhoto'])->name('user.updatePhoto');
-    
 });

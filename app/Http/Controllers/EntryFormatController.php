@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEntryFormatRequest;
+use App\Http\Requests\ValidateEntryFormatRequest;
 use App\Models\Country;
 use Illuminate\Support\Str;
 
@@ -87,9 +88,9 @@ class EntryFormatController extends Controller
         return Inertia::render("EntryFormat/Create", [
             'titulo'        => 'Format',
             'jobPositions'  => JobPosition::orderBy('name')->get(),
-            'countries'     => Country::orderBy('name')->select('id','name')->get(),
-            'languages'     => Language::orderBy('name')->select('id','name')->get(),
-            'levels'        => LanguageLevel::orderBy('name')->select('id','name')->get(),
+            'countries'     => Country::orderBy('name')->select('id', 'name')->get(),
+            'languages'     => Language::orderBy('name')->select('id', 'name')->get(),
+            'levels'        => LanguageLevel::orderBy('name')->select('id', 'name')->get(),
             'routeName'     => $this->routeName,
         ]);
     }
@@ -148,6 +149,12 @@ class EntryFormatController extends Controller
     {
         //
     }
+
+    public function validateFields(ValidateEntryFormatRequest $request)
+    {
+        return redirect()->back();
+    }
+
 
     private function storageFiles(Request $request, EntryFormat $entryFormat)
     {
