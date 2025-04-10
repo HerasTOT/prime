@@ -5,6 +5,7 @@ import FormControlIcon from "@/Components/FormControlIcon.vue";
 import { mdiEye, mdiEyeOff } from "@mdi/js";
 import BaseButton from "@/Components/BaseButton.vue";
 import BaseIcon from "./BaseIcon.vue";
+import InputMask from 'primevue/inputmask';
 
 const props = defineProps({
   name: {
@@ -77,6 +78,10 @@ const props = defineProps({
   },
   max: {
     type: [String, Object],
+    default: null,
+  },
+  mask: {
+    type: String,
     default: null,
   },
   required: Boolean,
@@ -210,6 +215,16 @@ if (props.ctrlKFocus) {
       :required="required"
       :disabled="disabled"
     />
+    <div v-else-if="computedType === 'mask'" 
+      :class="inputElClass"
+    >
+      <InputMask 
+        id="basic" 
+        v-model="computedValue" 
+        :mask="mask" 
+        :placeholder="placeholder" 
+      />
+    </div>
     <input
       v-else
       :id="id"

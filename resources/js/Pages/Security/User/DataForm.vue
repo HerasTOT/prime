@@ -20,8 +20,6 @@ import { useForm } from "@inertiajs/vue3";
 import { computed, inject, reactive, ref, toRefs } from "vue";
 import FormField from "@/Components/FormField.vue";
 import FormControl from "@/Components/FormControl.vue";
-import vSelect from "vue-select";
-import "vue-select/dist/vue-select.css";
 
 export default {
     name: "DataForm",
@@ -36,7 +34,6 @@ export default {
         Button,
         FormField,
         FormControl,
-        vSelect,
     },
     setup() {
         const form = inject("form");

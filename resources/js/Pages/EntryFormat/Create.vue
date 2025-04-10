@@ -30,7 +30,7 @@ import Documents from './Partials/Documents.vue';
 import { dataUriToFile } from "@/Hooks/useFile";
 import { useSignature } from '@/Hooks/useSignature';
 import NotificationBar from '@/Components/NotificationBar.vue';
-import { gradientBgLight} from "@/colors.js";
+import { gradientBgLight } from "@/colors.js";
 
 const props = defineProps({
     titulo: { type: String, required: true },
@@ -45,7 +45,7 @@ const form = useForm({
     name: null,
     last_name: null,
     middle_name: null,
-    mother_last_name:null,
+    mother_last_name: null,
     email: null,
     phone: null,
     age: null,
@@ -200,7 +200,7 @@ onMounted(() => {
                             :icon="mdiArrowRightThick" />
 
                         <BaseButton v-if="step === 5" @click="handleSubmit" color="success" label="Submit"
-                            :icon="mdiContentSaveCheck" roundedFull />
+                            :icon="mdiContentSaveCheck" :processing="form.processing" roundedFull />
                     </BaseButtons>
 
                 </form>
@@ -213,7 +213,6 @@ onMounted(() => {
                         <path d="M8 9l4 -4"></path>
                     </svg>
                 </button>
-               {{ form.errors}}
             </CardBox>
         </CardBox>
     </LayoutWelcome>

@@ -101,6 +101,7 @@ class EntryFormatController extends Controller
     {
         try {
             $fields = $request->validated();
+            $fields['salary'] = floatval(preg_replace('/[^\d.]/', '', $fields['salary']));
             $entryFormat = EntryFormat::create($fields);
 
             $entryFormat->skills()->sync($fields['skills']);

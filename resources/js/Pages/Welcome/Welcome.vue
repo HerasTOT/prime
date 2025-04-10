@@ -1,9 +1,9 @@
 <script setup>
-import { Head, Link } from '@inertiajs/inertia-vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import LayoutWelcome from '@/Layouts/LayoutWelcome.vue';
 import NotificationBar from '@/Components/NotificationBar.vue';
 import { mdiInformation } from '@mdi/js';
+import { Head } from '@inertiajs/vue3';
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,

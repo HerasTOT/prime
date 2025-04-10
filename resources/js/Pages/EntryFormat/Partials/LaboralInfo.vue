@@ -3,6 +3,7 @@ import FormControl from '@/Components/FormControl.vue';
 import FormField from '@/Components/FormField.vue';
 import { inject } from 'vue';
 import { mdiCurrencyUsd } from '@mdi/js';
+import InputMask from 'primevue/inputmask';
 
 const form = inject('form');
 
@@ -26,8 +27,7 @@ const form = inject('form');
             pattern="[0-9]{10}" @input="form.company_phone = form.company_phone.replace(/\D/g, '').slice(0, 10)" />
     </FormField>
     <FormField label="Salary" required :error="form.errors.salary">
-        <FormControl v-model="form.salary" :icon="mdiCurrencyUsd" type="number" placeholder="Enter your previous salary"
-            min="0" step="0.01" />
+        <FormControl v-model="form.salary" :icon="mdiCurrencyUsd" placeholder="_._/hr" mask="99.99/hr" type="mask" />
     </FormField>
     <FormField label="Enter the date you started" required :error="form.errors.start_date">
         <FormControl v-model="form.start_date" type="date" />

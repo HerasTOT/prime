@@ -42,7 +42,7 @@ class StoreEntryFormatRequest extends FormRequest
             'supervisor'                => 'nullable|string|max:255',
             'address'                   => 'nullable|string|max:255',
             'company_phone'             => 'nullable|string|regex:/^\d{10}$/',
-            'salary'                    => 'nullable|numeric|min:0',
+            'salary'                    => 'nullable|string|max:255',
             'start_date'                => 'required|date|before_or_equal:end_date',
             'end_date'                  => 'nullable|date|after_or_equal:start_date',
             'termination_reason'        => 'nullable|string|max:500',
