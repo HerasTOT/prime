@@ -156,7 +156,7 @@ const closeModal = () => {
                             Name
                             <Dropdown title="Nombre" :options="opts" />
                         </th>
-
+                        <th> Middle name </th>
                         <th> Paternal Surname</th>
                         <th> Maternal Surname</th>
                         <th>
@@ -172,8 +172,9 @@ const closeModal = () => {
                 <tbody>
                     <tr v-for="item in format.data" :key="item.id">
                         <td>{{ item.name }}</td>
-                        <td>{{ item.paternalSurname }}</td>
-                        <td>{{ item.maternalSurname }}</td>
+                        <td>{{ item.middle_name }}</td>
+                        <td>{{ item.last_name }}</td>
+                        <td>{{ item.mother_last_name }}</td>
                         <td>{{ item.email }}</td>
                         <td>{{ item.phone }}</td>
                         <td>{{ item.age }}</td>
@@ -182,7 +183,6 @@ const closeModal = () => {
                                 See information
                             </button>
                         </td>
-
                         <td></td>
                     </tr>
                 </tbody>
@@ -194,22 +194,69 @@ const closeModal = () => {
         </CardBox>
 
         <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-                <h2 class="text-lg font-bold mb-4">Información Adicional</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg w-96 max-h-[90vh] overflow-y-auto">
+                <h2 class="text-lg font-bold mb-4"> Personal information</h2>
+
                 <p><strong>Name: </strong>{{ selectedItem.name }}</p>
-                <p><strong>Paternal Surname: </strong>{{ selectedItem.paternalSurname }}</p>
-                <p><strong>Maternal Surname: </strong>{{ selectedItem.maternalSurname }}</p>
+                <p><strong>Middle name: </strong>{{ selectedItem.middle_name }}</p>
+                <p><strong>Paternal Surname: </strong>{{ selectedItem.last_name }}</p>
+                <p><strong>Maternal Surname: </strong>{{ selectedItem.mother_last_name }}</p>
                 <p><strong>Email: </strong>{{ selectedItem.email }}</p>
                 <p><strong>Phone: </strong>{{ selectedItem.phone }}</p>
                 <p><strong>Age: </strong>{{ selectedItem.age }}</p>
                 <p><strong>Birthdate: </strong> {{ selectedItem.birthdate }}</p>
                 <p><strong>SSN: </strong> {{ selectedItem.ssn }}</p>
 
+                <hr class="my-4" />
+                <h3 class="text-md font-semibold mb-2">Work experience</h3>
+                <p><strong>Position: </strong>{{ selectedItem.experience?.position }}</p>
+                <p><strong>Company: </strong>{{ selectedItem.experience?.company }}</p>
+                <p><strong>Supervisor: </strong>{{ selectedItem.experience?.supervisor }}</p>
+                <p><strong>Address: </strong>{{ selectedItem.experience?.address }}</p>
+                <p><strong>Phone Company: </strong>{{ selectedItem.experience?.company_phone }}</p>
+                <p><strong>Salary: </strong>{{ selectedItem.experience?.salary }}</p>
+                <p><strong>Start Date: </strong>{{ selectedItem.experience?.start_date }}</p>
+                <p><strong>End Date: </strong>{{ selectedItem.experience?.end_date }}</p>
+                <p><strong>Reason for leaving: </strong>{{ selectedItem.experience?.termination_reason }}</p>
+
+
+                <hr class="my-4" />
+                <h3 class="text-md font-semibold mb-2">Skills</h3>
+                <ul class="list-disc list-inside" v-if="selectedItem.skills && selectedItem.skills.length > 0">
+                    <li v-for="(skill, index) in selectedItem.skills" :key="index">
+                        {{ skill.name }} - {{ skill.description }}
+                    </li>
+                </ul>
+                <p v-else class="text-gray-500 italic">There are no registered skills.</p>
+
+
+                <hr class="my-4" />
+                <h3 class="text-md font-semibold mb-2">Desired jobs</h3>
+                <ul class="list-disc list-inside"
+                    v-if="selectedItem.desired_jobs && selectedItem.desired_jobs.length > 0">
+                    <li v-for="(job, index) in selectedItem.desired_jobs" :key="index">
+                        {{ job.name }} - {{ job.description }}
+                    </li>
+                </ul>
+                <p v-else class="text-gray-500 italic">There are no registered skills.</p>
+
+                <hr class="my-4" />
+                <h3 class="text-md font-semibold mb-2">Files</h3>
+                <ul class="list-disc list-inside" v-if="selectedItem.files && selectedItem.files.length > 0">
+                    <li v-for="(file, index) in selectedItem.files" :key="index">
+                        <a :href="file.path" target="_blank" class="text-blue-600">{{ file.name }}</a>
+                        ({{ (file.size / 1024).toFixed(2) }} KB)
+                        <span class="text-gray-500">{{ file.mime_type }}</span>
+                    </li>
+                </ul>
+                <p v-else class="text-gray-500 italic">No files uploaded.</p>
                 <button @click="closeModal" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded-md w-full">
                     Close
                 </button>
+                
             </div>
         </div>
+
 
         <Pagination :data="format" />
     </LayoutMain>
