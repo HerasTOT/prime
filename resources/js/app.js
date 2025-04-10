@@ -1,8 +1,6 @@
 import "../css/main.css";
 import 'flowbite';
 
-
-
 import { createPinia } from "pinia";
 import { useStyleStore } from "@/stores/style.js";
 import { darkModeKey, styleKey } from "@/config.js";

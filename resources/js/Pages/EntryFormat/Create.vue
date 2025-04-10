@@ -16,7 +16,7 @@ import LayoutMain from "@/Layouts/LayoutMain.vue";
 import FormField from "@/Components/FormField.vue";
 import FormControl from "@/Components/FormControl.vue";
 import BaseButton from "@/Components/BaseButton.vue";
-import { ref, watch, reactive, provide, inject } from 'vue'
+import { ref, watch, reactive, provide, inject, onMounted } from 'vue'
 import axios from 'axios'
 import IconRounded from '@/Components/IconRounded.vue';
 import { mdiChevronRight } from '@mdi/js';
@@ -30,11 +30,15 @@ import Documents from './Partials/Documents.vue';
 import { dataUriToFile } from "@/Hooks/useFile";
 import { useSignature } from '@/Hooks/useSignature';
 import NotificationBar from '@/Components/NotificationBar.vue';
+import { gradientBgLight} from "@/colors.js";
 
 const props = defineProps({
     titulo: { type: String, required: true },
     routeName: { type: String, required: true },
     jobPositions: { type: Object, required: true },
+    countries: { type: Object, required: true },
+    languages: { type: Object, required: true },
+    levels: { type: Object, required: true },
 });
 
 const form = useForm({
@@ -47,6 +51,8 @@ const form = useForm({
     age: null,
     birthdate: null,
     ssn: null,
+    country_id: null,
+    language_id: null,
     skills: [],
     desires: [],
     position: null,
@@ -63,18 +69,30 @@ const form = useForm({
     security: null,
     selfie: null,
     cv: null,
-    signature: null
+    signature: null,
+
+    languageEntries: [{ id: 1, languageCode: "", proficiencyLevel: "" }],
 });
 
 const step = ref(1);
 const signatureInstance = useSignature(); // Solo una instancia
 
+const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
 const nextStep = () => {
-    if (step.value < 5) step.value++;
+    if (step.value < 5) {
+        step.value++;
+        scrollToTop();
+    }
 };
 
 const prevStep = () => {
-    if (step.value > 1) step.value--;
+    if (step.value > 1) {
+        step.value--;
+        scrollToTop();
+    }
 };
 
 const handleSubmit = () => {
@@ -88,14 +106,28 @@ const handleSubmit = () => {
     });
 };
 provide('form', form);
+provide('props', props);
 provide("useSignature", signatureInstance);
+
+onMounted(() => {
+    const scrollToTopButton = document.getElementById("scrollToTop");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            scrollToTopButton.classList.remove("hidden");
+        } else {
+            scrollToTopButton.classList.add("hidden");
+        }
+    };
+    scrollToTopButton?.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+});
 </script>
 
 <template>
 
     <Head title="Register form" />
     <LayoutWelcome>
-
         <CardBox class="max-w-7xl mx-auto animate-fade-down animate-once my-2" bg="bg-gray-100">
             <NotificationBar v-if="$page.props.flash.success" color="success" :icon="mdiInformation" :outline="false">
                 {{ $page.props.flash.success }}
@@ -172,6 +204,15 @@ provide("useSignature", signatureInstance);
                     </BaseButtons>
 
                 </form>
+                <button id="scrollToTop"
+                    class="animate-bounce animate-once animate-duration-500 hidden fixed bottom-20 right-10 text-black p-3 rounded-full shadow-lg bg-slate-200 hover:bg-slate-300 transition-all duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="32" height="32"
+                        stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor">
+                        <path d="M12 5v6m0 3v1.5m0 3v.5"></path>
+                        <path d="M16 9l-4 -4"></path>
+                        <path d="M8 9l4 -4"></path>
+                    </svg>
+                </button>
                {{ form.errors}}
             </CardBox>
         </CardBox>

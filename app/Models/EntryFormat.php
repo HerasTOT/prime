@@ -17,7 +17,8 @@ class EntryFormat extends Model
         'phone',
         'age',
         'birthdate',
-        'ssn'
+        'ssn',
+        'country_id'
     ];
 
     public function experiences()
@@ -34,6 +35,18 @@ class EntryFormat extends Model
     public function desiredJobs()
     {
         return $this->belongsToMany(JobPosition::class, 'entry_format_desired_jobs');
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function languages()
+    {
+        return $this->belongsToMany(Language::class)
+            ->withPivot('language_level_id')
+            ->withTimestamps();
     }
 
     public function files()

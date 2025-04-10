@@ -22,6 +22,8 @@ return new class extends Migration
             $table->integer('age');
             $table->date('birthdate');
             $table->integer('ssn');
+            $table->foreignId('country_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('language_id')->nullable()->constrained()->onDelete('set null'); // provisional
             $table->timestamps();
         });
     }

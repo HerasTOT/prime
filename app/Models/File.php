@@ -23,4 +23,9 @@ class File extends Model
     {
         return $this->morphTo();
     }
+
+    public function document()
+    {
+        return $this->belongsTo(Document::class);
+    }
 }

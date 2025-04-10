@@ -5,16 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Document extends Model
+class LanguageLevel extends Model
 {
     use HasFactory;
     protected $fillable = [
         'name',
-        'description',
     ];
-
-    public function files()
-    {
-        return $this->hasMany(File::class);
-    }
 }

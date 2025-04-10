@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEntryFormatRequest;
+use App\Models\Country;
 use Illuminate\Support\Str;
 
 use App\Models\EntryFormat;
 use App\Models\Document;
 use App\Models\Experience;
 use App\Models\JobPosition;
+use App\Models\Language;
+use App\Models\LanguageLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -76,16 +79,18 @@ class EntryFormatController extends Controller
         ]);
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
         return Inertia::render("EntryFormat/Create", [
-            'titulo'      => 'Format',
-            'jobPositions' => JobPosition::orderBy('name')->get(),
-            'routeName'      => $this->routeName,
+            'titulo'        => 'Format',
+            'jobPositions'  => JobPosition::orderBy('name')->get(),
+            'countries'     => Country::orderBy('name')->select('id','name')->get(),
+            'languages'     => Language::orderBy('name')->select('id','name')->get(),
+            'levels'        => LanguageLevel::orderBy('name')->select('id','name')->get(),
+            'routeName'     => $this->routeName,
         ]);
     }
 
@@ -110,36 +115,6 @@ class EntryFormatController extends Controller
             return redirect()->back()->with('error', 'Error form');
         }
     }
-
-    private function storageFiles(Request $request, EntryFormat $entryFormat)
-    {
-        $files = [
-            'idFront'   => ['folder' => 'idFront',   'document_id' => 1],
-            'idBack'    => ['folder' => 'idBack',    'document_id' => 2],
-            'security'  => ['folder' => 'security',  'document_id' => 3],
-            'selfie'    => ['folder' => 'selfie',    'document_id' => 4],
-            'cv'        => ['folder' => 'cv',        'document_id' => 5],
-            'signature' => ['folder' => 'documents', 'document_id' => 6],
-        ];
-
-        foreach ($files as $input => $config) {
-            if ($request->hasFile($input)) {
-                $file = $request->file($input);
-
-                $fileName = "{$entryFormat->id}-{$file->getClientOriginalName()}.jpg";
-                $filePath = $file->storeAs($config['folder'], $fileName, 'private');
-
-                $entryFormat->files()->create([
-                    'name'        => $fileName,
-                    'path'        => $filePath,
-                    'size'        => $file->getSize(),
-                    'mime_type'   => $file->getMimeType(),
-                    'document_id' => $config['document_id'],
-                ]);
-            }
-        }
-    }
-
 
     /**
      * Display the specified resource.
@@ -173,5 +148,32 @@ class EntryFormatController extends Controller
         //
     }
 
-    // public function validate
+    private function storageFiles(Request $request, EntryFormat $entryFormat)
+    {
+        $files = [
+            'idFront'   => ['folder' => 'idFront',   'document_id' => 1],
+            'idBack'    => ['folder' => 'idBack',    'document_id' => 2],
+            'security'  => ['folder' => 'security',  'document_id' => 3],
+            'selfie'    => ['folder' => 'selfie',    'document_id' => 4],
+            'cv'        => ['folder' => 'cv',        'document_id' => 5],
+            'signature' => ['folder' => 'documents', 'document_id' => 6],
+        ];
+
+        foreach ($files as $input => $config) {
+            if ($request->hasFile($input)) {
+                $file = $request->file($input);
+
+                $fileName = "{$entryFormat->id}-{$file->getClientOriginalName()}.jpg";
+                $filePath = $file->storeAs($config['folder'], $fileName, 'private');
+
+                $entryFormat->files()->create([
+                    'name'        => $fileName,
+                    'path'        => $filePath,
+                    'size'        => $file->getSize(),
+                    'mime_type'   => $file->getMimeType(),
+                    'document_id' => $config['document_id'],
+                ]);
+            }
+        }
+    }
 }

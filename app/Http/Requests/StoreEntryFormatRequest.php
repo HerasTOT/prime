@@ -31,6 +31,8 @@ class StoreEntryFormatRequest extends FormRequest
             'age'                       => 'required|integer|min:18|max:99',
             'birthdate'                 => 'required|date|before:today',
             'ssn'                       => 'required|numeric|regex:/^\d{9}$/',
+            'country_id'                => 'required|exists:countries,id',
+            'language_id'               => 'required|exists:languages,id',
             'skills'                    => 'nullable|array',
             'skills.*'                  => 'integer|exists:job_positions,id',
             'desires'                   => 'nullable|array',
