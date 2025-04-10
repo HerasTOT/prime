@@ -103,7 +103,7 @@ const computedValue = computed({
 const inputElClass = computed(() => {
   const base = [
     "px-3 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full",
-    "dark:placeholder-gray-400",
+    "dark:placeholder-gray-400 dark:text-gray-300 dark:border-gray-600",
     computedType.value === "textarea" ? "h-24" : computedType.value === "file" ? "" : props.heigh,
     computedType.value === "file" ? "py-0" : 'py-2',
     props.borderless ? "border-0" : "border",

@@ -9,12 +9,12 @@ import BaseIcon from "@/Components/BaseIcon.vue";
 import { gradientBgDark } from "@/colors";
 
 const styleStore = useStyleStore();
-// const isDarkMode = ref(styleStore.darkMode);
+const isDarkMode = ref(styleStore.darkMode);
 const isAuthenticate = usePage().props.auth.user?.id ? true : false;
 
-// const handleToggle = () => {
-//     styleStore.setDarkMode();
-// };
+const handleToggle = () => {
+    styleStore.setDarkMode();
+};
 
 const showMenu = ref(false);
 const toggleNav = () => {
@@ -65,7 +65,8 @@ const toggleNav = () => {
                     </li> -->
                 </ul>
 
-                <div class="order-1 flex justify-center items-center mt-4 lg:order-2 lg:mt-0 lg:flex lg:items-center gap-2">
+                <div
+                    class="order-1 flex justify-center items-center mt-4 lg:order-2 lg:mt-0 lg:flex lg:items-center gap-2">
                     <!-- <BaseButton outline small :icon="mdiThemeLightDark" @click="handleToggle" /> -->
                     <!-- <label class="inline-flex items-center cursor-pointer mr-4 gap-1">
                         <BaseIcon :path="mdiThemeLightDark" class="text-white" />
@@ -76,8 +77,8 @@ const toggleNav = () => {
                     </label> -->
 
                     <div class="flex gap-4">
-                        <BaseButton v-if="!isAuthenticate" outline small :icon="mdiLogin" color="info"
-                            routeName="login" label="Login" />
+                        <BaseButton v-if="!isAuthenticate" outline small :icon="mdiLogin" color="info" routeName="login"
+                            label="Login" />
                         <BaseButton v-if="isAuthenticate" outline small :icon="mdiHome" color="info"
                             routeName="dashboard" label="Dashboard" />
                     </div>

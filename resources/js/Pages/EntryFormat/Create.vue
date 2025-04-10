@@ -93,7 +93,7 @@ const nextStep = async () => {
 const prevStep = () => {
     if (step.value > 1) {
         step.value--;
-        scrollToTop();
+        // scrollToTop();
     }
 };
 
@@ -156,7 +156,7 @@ onMounted(() => {
 
     <Head title="Register form" />
     <LayoutWelcome>
-        <CardBox class="max-w-7xl mx-auto animate-fade-down animate-once my-2" bg="bg-gray-100">
+        <CardBox class="max-w-7xl mx-auto animate-fade-down animate-once my-10" bg="bg-gray-100">
             <NotificationBar v-if="$page.props.flash.success" color="success" :icon="mdiInformation" :outline="false">
                 {{ $page.props.flash.success }}
             </NotificationBar>
@@ -164,17 +164,17 @@ onMounted(() => {
             <NotificationBar v-if="$page.props.flash.error" color="danger" :icon="mdiInformation" :outline="false">
                 {{ $page.props.flash.error }}
             </NotificationBar>
-            <div class="grid grid-cols-5 border-b text-center border border-black">
+            <div class="grid grid-cols-5 border-b text-center border border-black dark:border-slate-400">
                 <div v-for="(label, index) in ['Personal Info', 'Experience', 'Positions you are interested in', 'Work Info', 'Document']"
                     :key="index"
-                    class="p-4 border-r border-black flex flex-col items-center justify-center relative transition-opacity duration-300 gap-2"
+                    class="p-4 border-r border-black dark:border-slate-400 flex flex-col items-center justify-center relative transition-opacity duration-300 gap-2"
                     :class="{ 'opacity-100': step === index + 1, 'opacity-80': step !== index + 1 }">
 
-                    <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg relative z-10"
-                        :class="step === index + 1 ? 'text-white' : 'text-gray-800'" style="background-color: #031339;">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center font-extrabold text-lg relative z-10"
+                        :class="step === index + 1 ? 'text-white dark:text-white' : 'text-gray-800 dark:text-gray-400'" style="background-color: #031339;">
                         {{ index + 1 }}
                     </div>
-                    <h3 class="text-sm font-semibold mt-2 text-[#031339] hidden sm:block">{{ label }}</h3>
+                    <h3 class="text-sm font-bold mt-2 text-[#031339] dark:text-white hidden sm:block">{{ label }}</h3>
                 </div>
             </div>
             <!-- Formulario -->
