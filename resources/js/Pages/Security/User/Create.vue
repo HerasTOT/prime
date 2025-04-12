@@ -23,6 +23,11 @@ const props = defineProps({
 
 const form = useForm({
     name: '',
+    middle_name:'',
+    last_name:'',
+    mother_last_name:'',
+    phone:'',
+    birthdate:'',
     email: '',
     password: '',
     profiles: [],

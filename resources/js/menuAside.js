@@ -65,43 +65,43 @@ export default [
     },
     
 
-    // {
-    //     route: "profile.edit",
-    //     label: "Perfil",
-    //     icon: mdiAccountCircle,
-    // },
-    // {
-    //     label: "Seguridad",
-    //     icon: mdiShieldLock,
-    //     role: "Admin",
-    //     permission: "modulo.seguridad",
-    //     menu: [
-    //         {
-    //             label: "Modulos",
-    //             route: "module.index",
-    //             icon: mdiViewModule,
-    //             permission: "module.index",
-    //         },
-    //         {
-    //             label: "Permisos",
-    //             route: "permissions.index",
-    //             icon: mdiLockCheckOutline,
-    //             permission: "permissions.index",
-    //         },
-    //         {
-    //             label: "Roles",
-    //             route: "perfiles.index",
-    //             icon: mdiAccountSupervisor,
-    //             permission: "perfiles.index",
-    //         },
-    //         {
-    //             label: "Usuarios",
-    //             route: "user.index",
-    //             icon: mdiAccount,
-    //             permission: "user.index",
-    //         },
-    //     ],
-    // },
+    {
+        route: "profile.edit",
+        label: "Perfil",
+        icon: mdiAccountCircle,
+    },
+    {
+        label: "Seguridad",
+        icon: mdiShieldLock,
+        role: "Admin",
+        permission: "modulo.seguridad",
+        menu: [
+            {
+                label: "Modulos",
+                route: "module.index",
+                icon: mdiViewModule,
+                permission: "module.index",
+            },
+            {
+                label: "Permisos",
+                route: "permissions.index",
+                icon: mdiLockCheckOutline,
+                permission: "permissions.index",
+            },
+            {
+                label: "Roles",
+                route: "perfiles.index",
+                icon: mdiAccountSupervisor,
+                permission: "perfiles.index",
+            },
+            {
+                label: "Usuarios",
+                route: "user.index",
+                icon: mdiAccount,
+                permission: "user.index",
+            },
+        ],
+    },
     // {
     //     label: "Catalogos",
     //     icon: mdiPlaylistEdit ,

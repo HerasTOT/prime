@@ -47,7 +47,7 @@ export default {
         const associateProfile = (profile) => {
             if (form.profiles.some((item) => profile.id === item.id)) {
                 profile.permissions.forEach((item) =>
-                    form.permissions.push({ id: item.id, name: item.name })
+                    form.permissions.push({ id: item.id, name: item.name, middle_name: item.middle_name, last_name: item.last_name })
                 );
             } else {
                 profile.permissions.forEach((item) => {
@@ -77,21 +77,57 @@ export default {
 </script>
 
 <template>
+    {{ form }}
     <div class="md:flex md:space-x-4 mb-5">
         <div class="md:w-1/2 max-lg:mb-5">
-            <FormField label="Nombre del usuario:" :required="true" :error="form.errors.name">
-                <FormControl v-model="form.name" placeholder="Nombre del usuario" />
+            <FormField label="Name:" :required="true" :error="form.errors.name">
+                <FormControl v-model="form.name" placeholder="Name" />
             </FormField>
         </div>
         <div class="md:w-1/2">
-            <FormField label="Correo Electrónico:" :required="true" :error="form.errors.email">
-                <FormControl v-model="form.email" type="email" placeholder="Correo Electrónico" />
+            <FormField label="Middle name:" :error="form.errors.middle_name">
+                <FormControl v-model="form.middle_name" placeholder="Middle name" />
             </FormField>
         </div>
     </div>
-    <FormField label="Nueva contraseña:" :error="form.errors.password">
-        <FormControl v-model="form.password" type="password" placeholder="Nueva contraseña" />
-    </FormField>
+    <div class="md:flex md:space-x-4 mb-5">
+        <div class="md:w-1/2">
+            <FormField label="Last_name:" :required="true" :error="form.errors.last_name">
+                <FormControl v-model="form.last_name" placeholder="Last_name" />
+            </FormField>
+        </div>
+        <div class="md:w-1/2">
+            <FormField label="Mother last name:" :error="form.errors.mother_last_name">
+                <FormControl v-model="form.mother_last_name" placeholder="Mother last name" />
+            </FormField>
+        </div>
+    </div>
+    <div class="md:flex md:space-x-4 mb-5">
+        <div class="md:w-1/2 max-lg:mb-5">
+            <FormField label="Phone number:" :required="true" :error="form.errors.phone">
+                <FormControl v-model="form.phone" placeholder="Phone number" />
+            </FormField>
+        </div>
+        <div class="md:w-1/2">
+            <FormField label="Birthdate:" :error="form.errors.birthdate">
+                <FormControl v-model="form.birthdate" placeholder="Birthdate" />
+            </FormField>
+        </div>
+    </div>
+
+    <div class="md:flex md:space-x-4 mb-5">
+        <div class="md:w-1/2 max-lg:mb-5">
+            <FormField label="Email:" :error="form.errors.email">
+                <FormControl v-model="form.email" type="email" placeholder="email" />
+            </FormField>
+        </div>
+        <div class="md:w-1/2">
+            <FormField label="Nueva contraseña:" :error="form.errors.password">
+                <FormControl v-model="form.password" type="password" placeholder="Nueva contraseña" />
+            </FormField>
+        </div>
+    </div>
+
     <FormField label="Selecciona un rol:" :required="true" help="Puedes asignarle uno o más roles al usuario">
         <table class="mb-5">
             <thead>

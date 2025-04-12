@@ -74,7 +74,9 @@ class UserController extends Controller
             fn ($user) => [
                 'id' => $user->id,
                 'name' => $user->name,
+                'middle_name' => $user->middle_name,
                 'email' => $user->email,
+
                 'roles' => $user->roles ? $user->roles->pluck('name') : null,
             ]
         );
@@ -109,6 +111,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        
         $fields = $request->validated();
         $fields['password'] = Hash::make($fields['password']);
         $user = $this->model::create($fields);
@@ -131,6 +134,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        
         return Inertia::render("{$this->source}Edit", [
             'title'    => 'Editar Usuarios.',
             'routeName' => $this->routeName,
