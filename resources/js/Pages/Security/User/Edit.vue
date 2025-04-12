@@ -26,10 +26,15 @@ const props = defineProps({
 const form = useForm({
     id: props.user.id,
     name: props.user.name,
+    middle_name: props.user.middle_name,
+    last_name: props.user.last_name,
+    mother_last_name: props.user.mother_last_name,
+    phone: props.user.phone,
+    birthdate: props.user.birthdate,
     email: props.user.email,
     password: null,
-    profiles: [...props.user.roles.map(p => ({ id: p.id, name: p.name }))],
-    permissions: [...props.user.permissions.map(p => ({ id: p.id, name: p.name }))],
+    profiles: [...props.user.roles.map(p => ({ id: p.id, name: p.name, last_name: p.last_name }))],
+    permissions: [...props.user.permissions.map(p => ({ id: p.id, name: p.name, last_name: p.last_name}))],
 });
 
 const saveForm = () => {

@@ -76,21 +76,65 @@ export default {
 </script>
 
 <template>
+    {{ form }}
     <div class="md:flex md:space-x-4 mb-5">
         <div class="md:w-1/2 max-lg:mb-5">
-            <FormField label="Nombre del usuario:" :required="true" :error="form.errors.name">
-                <FormControl v-model="form.name" placeholder="Nombre del usuario" />
+            <FormField label="Name:" :required="true" :error="form.errors.name">
+                <FormControl v-model="form.name" placeholder="Name" />
             </FormField>
         </div>
+
         <div class="md:w-1/2">
-            <FormField label="Correo Electrónico:" :required="true" :error="form.errors.email">
-                <FormControl v-model="form.email" type="email" placeholder="Correo Electrónico" />
+            <FormField label="Middle name:" :error="form.errors.middle_name">
+                <FormControl v-model="form.middle_name" placeholder="Middle name" />
             </FormField>
         </div>
     </div>
-    <FormField label="Contraseña:" :required="true" :error="form.errors.password">
-        <FormControl v-model="form.password" placeholder="Contraseña" type="password" />
-    </FormField>
+    <div class="md:flex md:space-x-4 mb-5">
+        <div class="md:w-1/2 max-lg:mb-5">
+            <FormField label="Last name:" :required="true" :error="form.errors.last_name">
+                <FormControl v-model="form.last_name" placeholder="Last name" />
+            </FormField>
+        </div>
+
+        <div class="md:w-1/2">
+            <FormField label="Mother last name:" :error="form.errors.mother_last_name">
+                <FormControl v-model="form.mother_last_name" placeholder="Mother last name" />
+            </FormField>
+        </div>
+    </div>
+
+    <div class="md:flex md:space-x-4 mb-5">
+        <div class="md:w-1/2 max-lg:mb-5">
+            <FormField label="Phone Number" required help="Enter only 10 digits" :error="form.errors.phone">
+                <FormControl v-model="form.phone" type="tel" placeholder="Enter phone number" maxlength="10"
+                    @input="form.phone = form.phone.replace(/\D/g, '').slice(0, 10)" />
+            </FormField>
+        </div>
+
+        <div class="md:w-1/2">
+            <FormField label="Birthdate" required :error="form.errors.birthdate">
+                <FormControl v-model="form.birthdate" type="date" />
+            </FormField>
+        </div>
+    </div>
+
+    <div class="md:flex md:space-x-4 mb-5">
+        <div class="md:w-1/2">
+            <FormField label="Email:" :required="true" :error="form.errors.email">
+                <FormControl v-model="form.email" type="email" placeholder="Email" />
+            </FormField>
+        </div>
+
+        <div class="md:w-1/2">
+            <FormField label="Password:" :required="true" :error="form.errors.password">
+                <FormControl v-model="form.password" placeholder="Password" type="password" />
+            </FormField>
+        </div>
+    </div>
+
+
+
     <FormField label="Selecciona un rol:" :required="true" help="Puedes asignarle uno o más roles al usuario">
         <table class="mb-5">
             <thead>

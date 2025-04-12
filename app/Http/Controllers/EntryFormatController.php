@@ -43,42 +43,40 @@ class EntryFormatController extends Controller
         $this->middleware("permission:{$this->module}.delete")->only(['destroy']);
     }
 
-    public function index(Request $request): Response
-    {
-        // Establecer dirección de ordenamiento por defecto
-        $direction = $request->has('direction') ? $request->direction : 'desc';
+        public function index(Request $request): Response
+        {
+            // Establecer dirección de ordenamiento por defecto
+            $direction = $request->has('direction') ? $request->direction : 'desc';
 
-        // Establecer campo de ordenamiento por defecto
-        $order = $request->has('order') ? $request->order : 'created_at';
+            // Establecer campo de ordenamiento por defecto
+            $order = $request->has('order') ? $request->order : 'created_at';
 
-        // Iniciar la consulta sobre el modelo EntryFormat
-        $formats = EntryFormat::query();
-
-        // Filtrar por búsqueda si se pasa el parámetro 'search'
-        $formats = $formats->when($request->search, function ($query, $search) {
+            $formats = EntryFormat::with(['experience', 'skills','desiredJobs','files'])
+        ->when($request->search, function ($query, $search) {
             if ($search != '') {
                 $query->where('name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('paternalSurname', 'LIKE', '%' . $search . '%')
-                    ->orWhere('maternalSurname', 'LIKE', '%' . $search . '%')
+                    ->orWhere('middle_name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('last_name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('mother_last_name', 'LIKE', '%' . $search . '%')
                     ->orWhere('email', 'LIKE', '%' . $search . '%')
-                    ->orWhere('phone', 'LIKE', '%' . $search . '%');
+                    ->orWhere('phone', 'LIKE', '%' . $search . '%')
+                    ->orWhere('age', 'LIKE', '%' . $search . '%');
             }
-        });
+        })
+        ->orderBy($order, $direction)
+        ->paginate(10)
+        ->withQueryString();
 
-        // Ordenar los resultados según los parámetros 'order' y 'direction'
-        $formats = $formats->orderBy($order, $direction);
-        $formats = $formats->paginate(10)->withQueryString();
+            return Inertia::render("EntryFormat/Index", [
+                'title'       => 'Formato de Registro',
+                'routeName'   => $this->routeName,
+                'format'      => $formats,
+                'search'      => $request->search ?? '',
+                'order'       => $order,
+                'direction'   => $direction,
 
-        return Inertia::render("EntryFormat/Index", [
-            'title'       => 'Formato de Registro',
-            'routeName'   => $this->routeName,
-            'format'      => $formats,
-            'search'      => $request->search ?? '',
-            'order'       => $order,
-            'direction'   => $direction,
-
-        ]);
-    }
+            ]);
+        }
 
     /**
      * Show the form for creating a new resource.

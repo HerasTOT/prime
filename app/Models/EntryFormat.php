@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class EntryFormat extends Model
 {
     use HasFactory;
@@ -21,11 +22,11 @@ class EntryFormat extends Model
         'country_id'
     ];
 
-    public function experiences()
+    public function experience()
     {
-        return $this->hasMany(Experience::class);
+        return $this->hasOne(Experience::class, 'entry_format_id');
     }
-
+    
     public function skills()
     {
         return $this->belongsToMany(JobPosition::class, 'entry_format_skills');

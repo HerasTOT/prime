@@ -241,6 +241,8 @@ onMounted(() => {
                         <path d="M8 9l4 -4"></path>
                     </svg>
                 </button>
+                {{ form }}
+               {{ form.errors}}
             </CardBox>
         </CardBox>
     </LayoutWelcome>
