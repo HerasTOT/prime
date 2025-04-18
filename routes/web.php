@@ -26,6 +26,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EntryFormatController;
 use App\Http\Controllers\JobPositionController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\FileController;
+
 
 use App\Http\Controllers\WelcomeController;
 use App\Models\EntryFormat;
@@ -78,6 +80,12 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('entryformat', EntryFormatController::class)->names('entryformat')->except('create', 'store');
     Route::resource('jobPosition', JobPositionController::class)->names('jobPosition');
+
+    Route::get('/formats/{entryFormat}', [EntryFormatController::class, 'getFormat'])->name('entryFormat.get');
+
+   
+    // Ruta para acceder a los archivos privados
+    Route::get('/files/{file}', [FileController::class, 'serveFile'])->name('files.serve');
 });
 
 Route::get('/checkEmail', function (Request $request) {

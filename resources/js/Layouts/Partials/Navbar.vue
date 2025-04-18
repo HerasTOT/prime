@@ -24,16 +24,14 @@ const toggleNav = () => {
 </script>
 
 <template>
-    <div :class="gradientBgDark">
+    <div style="background: linear-gradient(to top right, rgba(2,20,57,255));">
         <nav class="container px-6 py-8 mx-auto lg:flex lg:justify-start lg:items-center">
             <div class="flex items-center justify-between">
                 <Link href="/"
                     class="text-2xl font-extrabold text-white md:text-3xl hover:animate-pulse hover:animate-twice">
                 <div class="justify-normal flex items-center space-x-1">
-                    <img src="/img/logo.png" alt="" class="w-14 md:rounded-lg rounded-b-full rounded-t-lg">
-                    <p class="uppercase">
-                        PRIME
-                    </p>
+                    <img src=/storage/imagenes/prime5.png class="w-60">
+                   
                 </div>
                 </Link>
 

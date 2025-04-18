@@ -36,12 +36,15 @@
         </div>
 
         <div class="order-1 text-base">
-            <span v-if="total > 0">
+            <template v-if="total && total > 0">
                 Mostrando registros del {{ from }} al {{ to }} de un total de
                 {{ total }} registros
-            </span>
-            <span v-else>Sin registros</span>
+            </template>
+            <template v-else>
+                no records
+            </template>
         </div>
+
     </div>
     <div class="vl-parent">
         <loading v-model:active="isLoading" :can-cancel="false" :is-full-page="true" />

@@ -31,14 +31,12 @@ const { levels } = inject('props');
     <FormField label="Email" required :error="form.errors.email">
         <FormControl v-model="form.email" type="email" placeholder="Enter email" />
     </FormField>
-    <FormField label="Phone Number" required help="Enter only 10 digits" :error="form.errors.phone">
-        <FormControl v-model="form.phone" type="tel" placeholder="Enter phone number" maxlength="10"
-            @input="form.phone = form.phone.replace(/\D/g, '').slice(0, 10)" />
+   
+    <FormField label="Phone Number" :error="form.errors.phone">
+        <FormControl v-model="form.phone" mask="(999) 999-9999" placeholder="(000) 000-0000" type="mask"
+            fluid />
     </FormField>
-    <FormField label="Age" required :error="form.errors.age">
-        <FormControl v-model="form.age" type="tel" placeholder="Enter age" min="18" max="99"
-            @input="form.age = form.age.replace(/\D/g, '').slice(0, 2)" />
-    </FormField>
+
     <FormField label="Birthdate" required :error="form.errors.birthdate">
         <FormControl v-model="form.birthdate" type="date" />
     </FormField>
@@ -106,9 +104,10 @@ const { levels } = inject('props');
         <CardBoxComponentEmpty v-else />
     </div> -->
 
-    <FormField label="Social Security Number (SSN)" required :error="form.errors.ssn"
-        help="A 9-digit number issued by the U.S. government for identification and tax purposes.">
-        <FormControl v-model="form.ssn" type="tel" placeholder="Enter your social security" maxlength="9"
-            pattern="[0-9]{9}" @input="form.ssn = form.ssn.replace(/\D/g, '').slice(0, 9)" />
+
+
+    <FormField label="Social Security Number (SSN)" required :error="form.errors.ssn">
+        <FormControl v-model="form.ssn" mask="999-99-9999" placeholder="000-00-0000" type="mask"
+            fluid />
     </FormField>
 </template>

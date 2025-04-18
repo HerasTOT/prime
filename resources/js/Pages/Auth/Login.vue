@@ -63,16 +63,15 @@ const submit = () => {
                     {{ status }}
                 </NotificationBarInCard>
 
-                <!-- <h1 class="custom-h1">Odontología</h1> -->
-                <img src=http://127.0.0.1:8000/storage/imagenes/prime3.png
+                <img src=storage/imagenes/prime4.png
                     style="width: 200px; height: auto;display: block; margin: 0 auto;">
 
-                <FormField label="Correo electrónico" label-for="Correo electrónico" help="Porfavor introduce tu email">
+                <FormField label="Email" label-for="Correo electrónico" help="Enter your email">
                     <FormControl v-model="form.email" :icon="mdiAccount" id="Correo electrónico" autocomplete="email"
                         type="email" required />
                 </FormField>
 
-                <FormField label="Contraseña" label-for="Contraseña" help="Porfavor introduce tu contraseña">
+                <FormField label="Password"  help="Enter your password  ">
                     <FormControl v-model="form.password" :icon="mdiAsterisk" type="password" id="password"
                         autocomplete="current-password" required />
                 </FormField>
@@ -85,7 +84,7 @@ const submit = () => {
                 <BaseDivider />
 
                 <BaseButtons>
-                    <BaseButton class="w-full" type="submit" color="info" label="Iniciar sesion"
+                    <BaseButton class="w-full" type="submit" color="info" label="Login"
                         :class="{ 'opacity-25': form.processing }" :disabled="form.processing" :icon="mdiLogin" />
                 </BaseButtons>
                 <!-- <Link

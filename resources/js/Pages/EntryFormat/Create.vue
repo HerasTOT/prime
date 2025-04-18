@@ -48,7 +48,7 @@ const form = useForm({
     mother_last_name: null,
     email: null,
     phone: null,
-    age: null,
+   
     birthdate: null,
     ssn: null,
     country_id: null,
@@ -241,7 +241,7 @@ onMounted(() => {
                         <path d="M8 9l4 -4"></path>
                     </svg>
                 </button>
-                {{ form }}
+               
                {{ form.errors}}
             </CardBox>
         </CardBox>

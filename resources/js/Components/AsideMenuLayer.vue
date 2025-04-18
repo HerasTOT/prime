@@ -42,7 +42,7 @@ const asideLgCloseClick = (event) => {
                 class="flex flex-row h-14 items-center justify-between dark:bg-slate-900">
                 <div class="justify-center flex w-full p-2">
                     <div>
-                        <img src="http://127.0.0.1:8000/storage/imagenes/prime3.png"
+                        <img src="storage/imagenes/prime2.png"
                     style="width: 35px; height: auto;display: block; margin: 0 auto;">
                         
                     </div>
