@@ -16,6 +16,8 @@ use App\Models\LanguageLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Inertia\Response;
 use Inertia\Inertia;
 
@@ -43,40 +45,63 @@ class EntryFormatController extends Controller
         $this->middleware("permission:{$this->module}.delete")->only(['destroy']);
     }
 
-        public function index(Request $request): Response
-        {
-            // Establecer dirección de ordenamiento por defecto
-            $direction = $request->has('direction') ? $request->direction : 'desc';
+    public function index(Request $request): Response
+    {
+        $direction = $request->get('direction', 'desc');
+        $order = $request->get('order', 'created_at');
 
-            // Establecer campo de ordenamiento por defecto
-            $order = $request->has('order') ? $request->order : 'created_at';
+        $formats = EntryFormat::query()
+            ->when($request->search, function ($query, $search) {
+                if ($search != '') {
+                    $query->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('middle_name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('last_name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('mother_last_name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('email', 'LIKE', '%' . $search . '%')
+                        ->orWhere('phone', 'LIKE', '%' . $search . '%')
+                        ->orWhere('age', 'LIKE', '%' . $search . '%');
+                }
+            })
+            ->orderBy($order, $direction)
+            ->paginate(10)
+            ->withQueryString();
 
-            $formats = EntryFormat::with(['experience', 'skills','desiredJobs','files'])
-        ->when($request->search, function ($query, $search) {
-            if ($search != '') {
-                $query->where('name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('middle_name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('last_name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('mother_last_name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('email', 'LIKE', '%' . $search . '%')
-                    ->orWhere('phone', 'LIKE', '%' . $search . '%')
-                    ->orWhere('age', 'LIKE', '%' . $search . '%');
+        return Inertia::render("EntryFormat/Index", [
+            'title'       => 'Registration format',
+            'routeName'   => $this->routeName,
+            'format'      => $formats,
+            'search'      => $request->search ?? '',
+            'order'       => $order,
+            'direction'   => $direction,
+        ]);
+    }
+
+
+    public function getFormat(EntryFormat $entryFormat)
+    {
+        $files = $this->getFiles($entryFormat);
+        $entryFormat->load(['experience', 'skills', 'desiredJobs', 'files']);
+        return response()->json(['entryFormat'  => $entryFormat, 'files' => $files]); 
+    }
+
+    private function getFiles(EntryFormat $entryFormat)
+    {
+        $files = $entryFormat->files;
+        $filesData = [];
+
+        foreach ($files as $file) {
+            if (Storage::disk('private')->exists($file->path)) {
+
+                $type = $file->document->name;
+                $filesData[] = [
+                    'id' => $file->id,
+                    'document_type' => $type,
+                    'url' => URL::signedRoute('file.serve', $file, now()->addMinutes(60))
+                ];
             }
-        })
-        ->orderBy($order, $direction)
-        ->paginate(10)
-        ->withQueryString();
-
-            return Inertia::render("EntryFormat/Index", [
-                'title'       => 'Formato de Registro',
-                'routeName'   => $this->routeName,
-                'format'      => $formats,
-                'search'      => $request->search ?? '',
-                'order'       => $order,
-                'direction'   => $direction,
-
-            ]);
         }
+        return $filesData;
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -100,18 +125,21 @@ class EntryFormatController extends Controller
     {
         try {
             $fields = $request->validated();
+            
             $fields['salary'] = floatval(preg_replace('/[^\d.]/', '', $fields['salary']));
+            
             $entryFormat = EntryFormat::create($fields);
-
+            
             $entryFormat->skills()->sync($fields['skills']);
             $entryFormat->desiredJobs()->sync($fields['desires']);
-            $entryFormat->experiences()->create($fields);
+            $entryFormat->experience()->create($fields);
 
             $this->storageFiles($request, $entryFormat);
 
             return redirect()->route('welcome')->with('success', 'Registro creado con éxito');
         } catch (\Exception $e) {
             Log::error('Error form: ' . $e->getMessage());
+            //dd($e->getMessage());
             return redirect()->back()->with('error', 'Error form');
         }
     }

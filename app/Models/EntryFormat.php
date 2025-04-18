@@ -16,7 +16,7 @@ class EntryFormat extends Model
         'mother_last_name',
         'email',
         'phone',
-        'age',
+        
         'birthdate',
         'ssn',
         'country_id'
@@ -54,4 +54,5 @@ class EntryFormat extends Model
     {
         return $this->morphMany(File::class, 'fileable');
     }
+    
 }

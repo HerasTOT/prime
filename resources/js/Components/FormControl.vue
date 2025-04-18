@@ -219,10 +219,11 @@ if (props.ctrlKFocus) {
       :class="inputElClass"
     >
       <InputMask 
-        id="basic" 
+        id="phone" 
         v-model="computedValue" 
         :mask="mask" 
         :placeholder="placeholder" 
+        fluid
       />
     </div>
     <input

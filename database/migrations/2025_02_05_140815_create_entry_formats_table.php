@@ -19,9 +19,8 @@ return new class extends Migration
             $table->string('mother_last_name')->nullable();
             $table->string('email');
             $table->string('phone');
-            $table->integer('age');
             $table->date('birthdate');
-            $table->integer('ssn');
+            $table->string('ssn');
             $table->foreignId('country_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('language_id')->nullable()->constrained()->onDelete('set null'); // provisional
             $table->timestamps();

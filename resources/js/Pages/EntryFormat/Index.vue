@@ -16,6 +16,8 @@ import {
     mdiMagnify,
     mdiPlus
 } from "@mdi/js";
+import axios from 'axios'
+
 
 const props = defineProps({
     title: {
@@ -108,10 +110,33 @@ provide("filterBy", filterBy);
 const showModal = ref(false);
 const selectedItem = ref({});
 
-const openModal = (item) => {
-    selectedItem.value = item; // Asigna el objeto seleccionado
-    showModal.value = true;
+// const openModal = async (id) => {
+//     try {
+//         const response = await axios.get(route('entryFormat.get',id));
+//         selectedItem.value = response.data;
+//         showModal.value = true;
+//     } catch (error) {
+//         console.error('Error al obtener el formato:', error);
+//     }
+// };
+
+const openModal = async (id) => {
+    try {
+        const response = await axios.get(route('entryFormat.get', id));
+        const data = response.data;
+
+        // Almacenas todo el formato (con experience, skills, desiredJobs)
+        selectedItem.value = data.entryFormat;
+
+        // Pero los archivos no están dentro de selectedItem.files, así que los agregas manualmente
+        selectedItem.value.files = data.files;
+
+        showModal.value = true;
+    } catch (error) {
+        console.error('Error al obtener el formato:', error);
+    }
 };
+
 
 const closeModal = () => {
     showModal.value = false;
@@ -179,7 +204,7 @@ const closeModal = () => {
                         <td>{{ item.phone }}</td>
                         <td>{{ item.age }}</td>
                         <td>
-                            <button @click="openModal(item)" class="bg-blue-600 text-white px-3 py-1 rounded-md">
+                            <button @click="openModal(item.id)" class="bg-blue-600 text-white px-3 py-1 rounded-md">
                                 See information
                             </button>
                         </td>
@@ -244,16 +269,18 @@ const closeModal = () => {
                 <h3 class="text-md font-semibold mb-2">Files</h3>
                 <ul class="list-disc list-inside" v-if="selectedItem.files && selectedItem.files.length > 0">
                     <li v-for="(file, index) in selectedItem.files" :key="index">
-                        <a :href="file.path" target="_blank" class="text-blue-600">{{ file.name }}</a>
-                        ({{ (file.size / 1024).toFixed(2) }} KB)
-                        <span class="text-gray-500">{{ file.mime_type }}</span>
+                        <a :href="file.url" target="_blank" class="text-blue-600">
+                            {{ file.document_type }}
+                        </a>
                     </li>
                 </ul>
+
                 <p v-else class="text-gray-500 italic">No files uploaded.</p>
+
                 <button @click="closeModal" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded-md w-full">
                     Close
                 </button>
-                
+
             </div>
         </div>
 

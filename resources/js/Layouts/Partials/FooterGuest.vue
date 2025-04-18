@@ -34,7 +34,7 @@ import { ref } from 'vue';
             </div>
             <div class="mt-8 md:order-1 md:mt-0 ">
                 <div class="justify-center flex items-center space-x-1">
-                    <img src="/img/logo.png" alt="" class="w-6 rounded-full">
+                    <img src="/storage/imagenes/prime.png" alt="" class="w-6 rounded-full">
                     <p class="text-center text-base text-white">
                         &copy; PRIME
                     </p>

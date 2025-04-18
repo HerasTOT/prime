@@ -29,10 +29,9 @@ class ValidateEntryFormatRequest extends FormRequest
                 'last_name'                 => 'required|string|max:255',
                 'mother_last_name'          => 'nullable|string|max:255',
                 'email'                     => 'required|string|email|max:255',
-                'phone'                     => 'required|string|regex:/^\d{10}$/',
-                'age'                       => 'required|integer|min:18|max:99',
-                'birthdate'                 => 'required|date|before:today',
-                'ssn'                       => 'required|numeric|regex:/^\d{9}$/',
+                'phone'                     => 'required|string',
+                'birthdate'                 => 'required|date|before:' . now()->subYears(18)->format('Y-m-d'),
+                'ssn'                       => 'required|string',
                 'country_id'                => 'required|exists:countries,id',
                 'language_id'               => 'required|exists:languages,id',
             ];
@@ -52,7 +51,7 @@ class ValidateEntryFormatRequest extends FormRequest
                 'company'                   => 'required|string|max:255',
                 'supervisor'                => 'nullable|string|max:255',
                 'address'                   => 'nullable|string|max:255',
-                'company_phone'             => 'nullable|string|regex:/^\d{10}$/',
+                'company_phone'             => 'nullable|string',
                 'salary'                    => 'nullable|string|max:255',
                 'start_date'                => 'required|date|before_or_equal:end_date',
                 'end_date'                  => 'nullable|date|after_or_equal:start_date',
@@ -71,5 +70,11 @@ class ValidateEntryFormatRequest extends FormRequest
         }
 
         return $rules;
+    }   
+    public function messages(): array
+    {
+        return [
+            'birthdate.before' => 'You are not of legal age',
+        ];
     }
 }

@@ -23,8 +23,8 @@ const form = inject('form');
         <FormControl v-model="form.address" placeholder="Enter the company address" />
     </FormField>
     <FormField label="Company Phone" :error="form.errors.company_phone">
-        <FormControl v-model="form.company_phone" type="tel" placeholder="Enter the company phone" maxlength="10"
-            pattern="[0-9]{10}" @input="form.company_phone = form.company_phone.replace(/\D/g, '').slice(0, 10)" />
+        <FormControl v-model="form.company_phone" mask="(999) 999-9999" placeholder="(000) 000-0000" type="mask"
+            fluid />
     </FormField>
     <FormField label="Salary" required :error="form.errors.salary">
         <FormControl v-model="form.salary" :icon="mdiCurrencyUsd" placeholder="_._/hr" mask="99.99/hr" type="mask" />
