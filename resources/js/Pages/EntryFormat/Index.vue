@@ -181,15 +181,15 @@ const closeModal = () => {
                             Name
                             <Dropdown title="Nombre" :options="opts" />
                         </th>
-                        <th> Middle name </th>
-                        <th> Paternal Surname</th>
-                        <th> Maternal Surname</th>
+                        <!-- <th> Middle name </th>
+                        <th> Last name</th>
+                        <th> Maternal Surname</th> -->
                         <th>
                             Email
                             <Dropdown title="Email" :options="opts" />
                         </th>
                         <th>Phone</th>
-                        <th>Age</th>
+                       
                         <th>Information</th>
                         <th></th>
                     </tr>
@@ -197,12 +197,12 @@ const closeModal = () => {
                 <tbody>
                     <tr v-for="item in format.data" :key="item.id">
                         <td>{{ item.name }}</td>
-                        <td>{{ item.middle_name }}</td>
+                        <!-- <td>{{ item.middle_name }}</td>
                         <td>{{ item.last_name }}</td>
-                        <td>{{ item.mother_last_name }}</td>
+                        <td>{{ item.mother_last_name }}</td> -->
                         <td>{{ item.email }}</td>
                         <td>{{ item.phone }}</td>
-                        <td>{{ item.age }}</td>
+                       
                         <td>
                             <button @click="openModal(item.id)" class="bg-blue-600 text-white px-3 py-1 rounded-md">
                                 See information
@@ -223,15 +223,14 @@ const closeModal = () => {
                 <h2 class="text-lg font-bold mb-4"> Personal information</h2>
 
                 <p><strong>Name: </strong>{{ selectedItem.name }}</p>
-                <p><strong>Middle name: </strong>{{ selectedItem.middle_name }}</p>
-                <p><strong>Paternal Surname: </strong>{{ selectedItem.last_name }}</p>
-                <p><strong>Maternal Surname: </strong>{{ selectedItem.mother_last_name }}</p>
+                <!-- <p><strong>Middle name: </strong>{{ selectedItem.middle_name }}</p>
+                <p><strong>Last name: </strong>{{ selectedItem.last_name }}</p>
+                <p><strong>Maternal Surname: </strong>{{ selectedItem.mother_last_name }}</p> -->
                 <p><strong>Email: </strong>{{ selectedItem.email }}</p>
                 <p><strong>Phone: </strong>{{ selectedItem.phone }}</p>
-                <p><strong>Age: </strong>{{ selectedItem.age }}</p>
                 <p><strong>Birthdate: </strong> {{ selectedItem.birthdate }}</p>
                 <p><strong>SSN: </strong> {{ selectedItem.ssn }}</p>
-
+                <p><strong>Registration Date: </strong> {{ selectedItem.today_date }}</p>
                 <hr class="my-4" />
                 <h3 class="text-md font-semibold mb-2">Work experience</h3>
                 <p><strong>Position: </strong>{{ selectedItem.experience?.position }}</p>
@@ -284,7 +283,8 @@ const closeModal = () => {
             </div>
         </div>
 
-
-        <Pagination :data="format" />
+        <Pagination :currentPage="format.current_page" :links="format.links"
+        :total="format.links.length - 2"></Pagination>
+        <!-- <Pagination :data="format" /> -->
     </LayoutMain>
 </template>

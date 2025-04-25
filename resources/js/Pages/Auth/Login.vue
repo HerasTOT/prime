@@ -63,7 +63,7 @@ const submit = () => {
                     {{ status }}
                 </NotificationBarInCard>
 
-                <img src=storage/imagenes/prime4.png
+                <img src=/storage/imagenes/prime4.png
                     style="width: 200px; height: auto;display: block; margin: 0 auto;">
 
                 <FormField label="Email" label-for="Correo electrónico" help="Enter your email">

@@ -242,7 +242,7 @@ onMounted(() => {
                     </svg>
                 </button>
                
-               {{ form.errors}}
+               {{ form }}
             </CardBox>
         </CardBox>
     </LayoutWelcome>

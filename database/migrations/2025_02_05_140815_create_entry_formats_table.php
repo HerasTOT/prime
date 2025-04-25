@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
             $table->date('birthdate');
+            $table->date('today_date');
             $table->string('ssn');
             $table->foreignId('country_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('language_id')->nullable()->constrained()->onDelete('set null'); // provisional
