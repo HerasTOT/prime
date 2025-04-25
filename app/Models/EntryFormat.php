@@ -16,7 +16,7 @@ class EntryFormat extends Model
         'mother_last_name',
         'email',
         'phone',
-        
+        'today_date',
         'birthdate',
         'ssn',
         'country_id'

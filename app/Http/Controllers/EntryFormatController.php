@@ -58,8 +58,9 @@ class EntryFormatController extends Controller
                         ->orWhere('last_name', 'LIKE', '%' . $search . '%')
                         ->orWhere('mother_last_name', 'LIKE', '%' . $search . '%')
                         ->orWhere('email', 'LIKE', '%' . $search . '%')
-                        ->orWhere('phone', 'LIKE', '%' . $search . '%')
-                        ->orWhere('age', 'LIKE', '%' . $search . '%');
+                        ->orWhere('today_date', 'LIKE', '%' . $search . '%')
+                        ->orWhere('phone', 'LIKE', '%' . $search . '%');
+
                 }
             })
             ->orderBy($order, $direction)
